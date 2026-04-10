@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E² Teaching Framework — Complete App</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
+.hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:36px 20px 26px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4.5vw,2.4rem);margin-bottom:6px}
+.hero p{font-size:.92rem;opacity:.92}
+nav{background:var(--cream);border-bottom:2px solid var(--peach);display:flex;justify-content:center;gap:4px;padding:8px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+nav button{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:500;background:transparent;color:var(--brown);transition:all .2s}
+nav button:hover{background:var(--peach)}
+nav button.active{background:var(--terra);color:#fff}
+.tab{display:none;max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+.tab.active{display:block}
+.card{background:var(--cream);border-radius:12px;padding:22px 24px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid rgba(201,145,143,.15)}
+.card h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--clay);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--peach)}
+.card h3{font-size:1rem;color:var(--terra);margin:14px 0 8px}
+.field{margin-bottom:14px}
+.field label{display:block;font-weight:600;font-size:.84rem;margin-bottom:4px}
+.field .hint{font-size:.76rem;color:var(--rose);margin-bottom:4px;font-style:italic}
+input[type="text"],input[type="date"],select,textarea{width:100%;padding:9px 13px;border:1px solid var(--peach);border-radius:7px;font-family:'Inter',sans-serif;font-size:.88rem;background:#fff;color:var(--brown)}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,105,79,.12)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.manifesto{background:linear-gradient(135deg,var(--cream),var(--peach) 80%);border:2px solid var(--rose);border-radius:14px;padding:26px;margin-bottom:20px;text-align:center}
+.manifesto h2{font-family:'Playfair Display',serif;color:var(--clay);font-size:1.4rem;margin-bottom:14px}
+.mf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;text-align:left}
+.mf-item{background:var(--cream);border-left:4px solid var(--terra);border-radius:7px;padding:12px 14px;font-size:.88rem}
+.mf-item strong{color:var(--clay)}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}
+.quick-card{background:var(--cream);border-radius:10px;padding:18px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.quick-card:hover{border-color:var(--terra);transform:translateY(-2px)}
+.quick-card .icon{font-size:1.8rem;margin-bottom:6px}
+.quick-card h4{color:var(--terra);font-size:.9rem;margin-bottom:4px}
+.quick-card p{font-size:.78rem;color:#7a5f52}
+.btn{padding:9px 20px;border:none;border-radius:7px;cursor:pointer;font-size:.83rem;font-weight:500;margin:4px;transition:all .2s}
+.btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--clay)}
+.btn-secondary{background:var(--rose);color:#fff}.btn-secondary:hover{background:var(--terra)}
+.btn-outline{background:transparent;border:1.5px solid var(--terra);color:var(--terra)}.btn-outline:hover{background:var(--terra);color:#fff}
+/* Blueprint table */
+.bp-wrap{overflow-x:auto}
+.bp-table{border-collapse:collapse;width:100%;min-width:1500px;background:#fff;border-radius:10px;overflow:hidden}
+.bp-table th{background:var(--terra);color:#fff;padding:9px 7px;font-size:.72rem;text-align:left;position:sticky;top:0}
+.bp-table th:first-child{position:sticky;left:0;background:var(--clay);z-index:2}
+.bp-table td{padding:3px;border-bottom:1px solid var(--peach);vertical-align:top}
+.bp-table td:first-child{position:sticky;left:0;background:var(--cream);font-weight:600;text-align:center;color:var(--terra);z-index:1}
+.bp-table tr:nth-child(even) td{background:#fff}
+.bp-table tr:nth-child(even) td:first-child{background:#fff}
+.bp-table td textarea{width:100%;min-height:56px;border:1px solid transparent;border-radius:4px;padding:5px 7px;font-size:.78rem;background:transparent;resize:vertical}
+.bp-table td textarea:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 2px rgba(212,168,67,.15)}
+/* Checklist */
+.chk-group{margin-bottom:18px}
+.chk-group h3{font-size:.95rem;color:var(--terra);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--peach)}
+.chk-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0}
+.chk-item input{accent-color:var(--terra);width:17px;height:17px;margin-top:2px;cursor:pointer}
+.chk-item label{font-size:.87rem;cursor:pointer}
+.chk-item input:checked+label{text-decoration:line-through;color:var(--rose)}
+.prog-mini{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prog-mini .track{flex:1;height:8px;background:var(--peach);border-radius:4px;overflow:hidden}
+.prog-mini .fill{height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:4px;transition:width .3s}
+.prog-mini .pct{font-size:.78rem;font-weight:600;min-width:36px}
+/* Pillar reference */
+.pillar-ref{margin-bottom:20px}
+.pillar-ref h3{background:var(--terra);color:#fff;padding:10px 16px;border-radius:8px 8px 0 0;font-size:1rem;font-family:'Playfair Display',serif}
+.pillar-ref .body{background:var(--cream);padding:16px 20px;border-radius:0 0 8px 8px;border:1px solid var(--peach);border-top:none}
+.pillar-ref .body ul{padding-left:20px;font-size:.86rem}
+.pillar-ref .body li{margin-bottom:4px}
+.pillar-ref .body strong{color:var(--clay)}
+footer{text-align:center;padding:24px;background:var(--brown);color:var(--peach);font-size:.82rem}
+footer strong{color:var(--gold)}
+@media print{nav,.btn,.quick-card{display:none}.tab{display:block !important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>E² Teaching Framework</h1>
+<p>Every Student Has the Right to Understand — Your Complete Teaching Companion</p>
+</div>
+
+<nav>
+<button class="active" onclick="showTab('dash',this)">Dashboard</button>
+<button onclick="showTab('planner',this)">Lesson Planner</button>
+<button onclick="showTab('blueprint',this)">Blueprint / LMS</button>
+<button onclick="showTab('framework',this)">Framework</button>
+<button onclick="showTab('checklist',this)">Checklist</button>
+<button onclick="showTab('export',this)">Export</button>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="tab active" id="tab-dash">
+<div class="manifesto">
+<h2>Our Belief</h2>
+<div class="mf-grid">
+<div class="mf-item"><strong>1.</strong> Every student has the right to understand.</div>
+<div class="mf-item"><strong>2.</strong> It is <strong>NEVER</strong> the student's problem — the teacher adapts first.</div>
+<div class="mf-item"><strong>3.</strong> Struggle is a signal, not a verdict.</div>
+<div class="mf-item"><strong>4.</strong> No student is unteachable.</div>
+<div class="mf-item"><strong>5.</strong> The teacher adapts materials and methods.</div>
+<div class="mf-item"><strong>6.</strong> Understanding is every student's birthright.</div>
+</div>
+</div>
+<div class="card">
+<h2>Welcome to Your Teaching Companion</h2>
+<p style="font-size:.9rem">This app has everything you need to plan, teach, and reflect — all grounded in the belief that every student deserves to understand.</p>
+<div class="quick-grid">
+<div class="quick-card" onclick="showTab('planner',document.querySelector('nav button:nth-child(2)'))"><div class="icon">&#128221;</div><h4>Lesson Planner</h4><p>Build complete lessons</p></div>
+<div class="quick-card" onclick="showTab('blueprint',document.querySelector('nav button:nth-child(3)'))"><div class="icon">&#128197;</div><h4>Blueprint</h4><p>Plan your whole term</p></div>
+<div class="quick-card" onclick="showTab('framework',document.querySelector('nav button:nth-child(4)'))"><div class="icon">&#127891;</div><h4>Framework</h4><p>Reference the 4 pillars</p></div>
+<div class="quick-card" onclick="showTab('checklist',document.querySelector('nav button:nth-child(5)'))"><div class="icon">&#9989;</div><h4>Checklist</h4><p>Track your practice</p></div>
+</div>
+</div>
+</div>
+
+<!-- LESSON PLANNER -->
+<div class="tab" id="tab-planner">
+<div class="card"><h2>Lesson Information</h2>
+<div class="row"><div class="field"><label>Subject</label><input type="text" id="lp_subject" placeholder="e.g., Mathematics"></div><div class="field"><label>Grade Level</label><input type="text" id="lp_grade" placeholder="e.g., Grade 5"></div></div>
+<div class="row"><div class="field"><label>Topic / Unit</label><input type="text" id="lp_topic"></div><div class="field"><label>Duration</label><input type="text" id="lp_duration" placeholder="e.g., 45 min"></div></div>
+<div class="field"><label>Date</label><input type="date" id="lp_date"></div>
+<div class="field"><label>Learning Objectives</label><textarea id="lp_objectives" placeholder="SWBAT..."></textarea></div>
+</div>
+
+<div class="card"><h2>5-Part Blueprint (Pillar 1)</h2>
+<div class="field"><label>&#127919; Hook</label><div class="hint">How will you grab attention in the first 2 minutes?</div><textarea id="lp_hook"></textarea></div>
+<div class="field"><label>&#128218; Teach</label><div class="hint">How will you deliver the core content?</div><textarea id="lp_teach"></textarea></div>
+<div class="field"><label>&#9999;&#65039; Practice</label><div class="hint">What will students do to practice?</div><textarea id="lp_practice"></textarea></div>
+<div class="field"><label>&#128279; Connect</label><div class="hint">How does this link to real life?</div><textarea id="lp_connect"></textarea></div>
+<div class="field"><label>&#128173; Reflect</label><div class="hint">How will students show understanding?</div><textarea id="lp_reflect"></textarea></div>
+</div>
+
+<div class="card"><h2>Differentiation (Pillar 2)</h2>
+<div class="field"><label>Auditory Strategies</label><textarea id="lp_auditory"></textarea></div>
+<div class="field"><label>Visual Strategies</label><textarea id="lp_visual"></textarea></div>
+<div class="field"><label>Kinesthetic Strategies</label><textarea id="lp_kinesthetic"></textarea></div>
+<div class="field"><label>Support for Struggling Learners</label><textarea id="lp_struggling"></textarea></div>
+<div class="field"><label>Extension for Advanced Learners</label><textarea id="lp_advanced"></textarea></div>
+<div class="field"><label>Cultural Connections</label><textarea id="lp_cultural"></textarea></div>
+</div>
+
+<div class="card"><h2>Engagement — 6 Levers (Pillar 3)</h2>
+<div class="field"><label>Curiosity</label><textarea id="lp_curiosity"></textarea></div>
+<div class="field"><label>Active Participation</label><textarea id="lp_participation"></textarea></div>
+<div class="field"><label>Purpose</label><textarea id="lp_purpose"></textarea></div>
+<div class="field"><label>Feedback</label><textarea id="lp_feedback"></textarea></div>
+<div class="field"><label>Gamification</label><textarea id="lp_gamification"></textarea></div>
+<div class="field"><label>Routine & Novelty</label><textarea id="lp_routine"></textarea></div>
+</div>
+
+<div class="card"><h2>Classroom Culture (Pillar 4)</h2>
+<div class="field"><label>Relationship Moment</label><textarea id="lp_relationship"></textarea></div>
+<div class="field"><label>Norms Reinforcement</label><textarea id="lp_norms"></textarea></div>
+<div class="field"><label>Restorative Approach</label><textarea id="lp_restorative"></textarea></div>
+</div>
+
+<div class="card"><h2>Assessment & Materials</h2>
+<div class="field"><label>Formative Assessment Method</label><textarea id="lp_assessment"></textarea></div>
+<div class="field"><label>Success Criteria</label><textarea id="lp_success"></textarea></div>
+<div class="field"><label>Materials Needed</label><textarea id="lp_materials"></textarea></div>
+<div class="field"><label>Technology Tools</label><textarea id="lp_tech"></textarea></div>
+<div class="field"><label>Links & Resources</label><textarea id="lp_links"></textarea></div>
+<button class="btn btn-primary" onclick="newLessonPlan()">+ New Lesson Plan</button>
+<button class="btn btn-secondary" onclick="window.print()">Print Lesson Plan</button>
+</div>
+</div>
+
+<!-- BLUEPRINT -->
+<div class="tab" id="tab-blueprint">
+<div class="card">
+<h2>Weekly Blueprint / LMS Planner</h2>
+<div class="row">
+<div class="field"><label>Subject</label><input type="text" id="bp_subj"></div>
+<div class="field"><label>Teacher</label><input type="text" id="bp_teacher"></div>
+</div>
+<div class="bp-wrap">
+<table class="bp-table">
+<thead><tr><th>Week</th><th>Theme</th><th>Lesson 1 Objective</th><th>Lesson 2 Objective</th><th>Lesson Links</th><th>Nearpod Links</th><th>Flip Video</th><th>Classwork</th><th>Homework</th><th>Assessment</th><th>Revised HW/CW/Quiz</th><th>Teachers Guide / Resources</th><th>Comments</th></tr></thead>
+<tbody id="bpBody"></tbody>
+</table>
+</div>
+<div style="margin-top:14px">
+<button class="btn btn-primary" onclick="bpAdd()">+ Add Week</button>
+<button class="btn btn-outline" onclick="bpRemove()">- Remove Last</button>
+<button class="btn btn-secondary" onclick="bpExportCSV()">Export CSV</button>
+</div>
+</div>
+</div>
+
+<!-- FRAMEWORK -->
+<div class="tab" id="tab-framework">
+<div class="pillar-ref"><h3>Pillar 1 — Lesson Design (5-Part Blueprint)</h3><div class="body"><ul><li><strong>Hook (2 min):</strong> Mystery question, surprising fact, video, real-world problem</li><li><strong>Teach (10-15 min):</strong> Chunked content, visuals, think-aloud modeling</li><li><strong>Practice (15-20 min):</strong> Guided then independent, partner work, hands-on</li><li><strong>Connect (5 min):</strong> Real-world relevance, cross-curricular links</li><li><strong>Reflect (5 min):</strong> Exit tickets, journals, 3-2-1 summary</li><li><strong>Scaffolding:</strong> Break into steps, sentence starters, worked examples, I Do/We Do/You Do</li></ul></div></div>
+<div class="pillar-ref"><h3>Pillar 2 — Differentiated Instruction</h3><div class="body"><ul><li><strong>Auditory:</strong> Discussions, read-alouds, songs, podcasts</li><li><strong>Visual:</strong> Diagrams, color-coding, videos, mind maps</li><li><strong>Kinesthetic:</strong> Hands-on, movement breaks, manipulatives, role-play</li><li><strong>Tiered Tasks:</strong> Struggling / on-level / advanced versions</li><li><strong>Cultural Sensitivity:</strong> Diverse examples, honor home languages</li><li><strong>Student Choice:</strong> Menu boards, choice in how to demonstrate learning</li></ul></div></div>
+<div class="pillar-ref"><h3>Pillar 3 — Engagement & Motivation (6 Levers)</h3><div class="body"><ul><li><strong>1. Curiosity:</strong> Mysteries, "What if...?" questions</li><li><strong>2. Active Participation:</strong> Think-pair-share, mini whiteboards, polls</li><li><strong>3. Purpose:</strong> Explain the "why", connect to student goals</li><li><strong>4. Feedback:</strong> Immediate, specific, growth-oriented</li><li><strong>5. Gamification:</strong> Points, badges, challenges, progress tracking</li><li><strong>6. Routine & Novelty:</strong> Predictable structure + surprising elements</li></ul></div></div>
+<div class="pillar-ref"><h3>Pillar 4 — Classroom Culture</h3><div class="body"><ul><li><strong>Relationships:</strong> Learn names fast, 2x10 strategy, greet at door</li><li><strong>Co-Created Norms:</strong> Involve students, revisit regularly, display visually</li><li><strong>Restorative Discipline:</strong> Repair over punishment, reflection circles</li><li><strong>Physical Environment:</strong> Flexible seating, organized materials, welcoming</li></ul></div></div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="tab" id="tab-checklist">
+<div class="card">
+<h2>Implementation Checklist</h2>
+<div class="prog-mini"><strong style="font-size:.82rem;color:var(--terra)">Overall:</strong><div class="track"><div class="fill" id="fill-all"></div></div><span class="pct" id="pct-all">0%</span></div>
+
+<div class="chk-group" data-p="p1"><h3>Pillar 1 — Lesson Design</h3>
+<div class="prog-mini"><div class="track"><div class="fill" id="fill-p1"></div></div><span class="pct" id="pct-p1">0%</span></div>
+<div class="chk-item"><input type="checkbox" id="ck1" data-pillar="p1"><label for="ck1">I start lessons with an engaging hook</label></div>
+<div class="chk-item"><input type="checkbox" id="ck2" data-pillar="p1"><label for="ck2">I chunk content into digestible parts</label></div>
+<div class="chk-item"><input type="checkbox" id="ck3" data-pillar="p1"><label for="ck3">I include guided AND independent practice</label></div>
+<div class="chk-item"><input type="checkbox" id="ck4" data-pillar="p1"><label for="ck4">I connect lessons to real life</label></div>
+<div class="chk-item"><input type="checkbox" id="ck5" data-pillar="p1"><label for="ck5">I end with reflection or exit tickets</label></div>
+<div class="chk-item"><input type="checkbox" id="ck6" data-pillar="p1"><label for="ck6">I scaffold complex tasks</label></div>
+</div>
+
+<div class="chk-group" data-p="p2"><h3>Pillar 2 — Differentiation</h3>
+<div class="prog-mini"><div class="track"><div class="fill" id="fill-p2"></div></div><span class="pct" id="pct-p2">0%</span></div>
+<div class="chk-item"><input type="checkbox" id="ck7" data-pillar="p2"><label for="ck7">I address auditory learners</label></div>
+<div class="chk-item"><input type="checkbox" id="ck8" data-pillar="p2"><label for="ck8">I include visual supports</label></div>
+<div class="chk-item"><input type="checkbox" id="ck9" data-pillar="p2"><label for="ck9">I incorporate movement/hands-on</label></div>
+<div class="chk-item"><input type="checkbox" id="ck10" data-pillar="p2"><label for="ck10">I provide tiered support</label></div>
+<div class="chk-item"><input type="checkbox" id="ck11" data-pillar="p2"><label for="ck11">I challenge advanced learners</label></div>
+<div class="chk-item"><input type="checkbox" id="ck12" data-pillar="p2"><label for="ck12">I honor cultural diversity</label></div>
+<div class="chk-item"><input type="checkbox" id="ck13" data-pillar="p2"><label for="ck13">I offer student choice</label></div>
+</div>
+
+<div class="chk-group" data-p="p3"><h3>Pillar 3 — Engagement & Motivation</h3>
+<div class="prog-mini"><div class="track"><div class="fill" id="fill-p3"></div></div><span class="pct" id="pct-p3">0%</span></div>
+<div class="chk-item"><input type="checkbox" id="ck14" data-pillar="p3"><label for="ck14">I spark curiosity</label></div>
+<div class="chk-item"><input type="checkbox" id="ck15" data-pillar="p3"><label for="ck15">ALL students participate actively</label></div>
+<div class="chk-item"><input type="checkbox" id="ck16" data-pillar="p3"><label for="ck16">I explain WHY this matters</label></div>
+<div class="chk-item"><input type="checkbox" id="ck17" data-pillar="p3"><label for="ck17">I give immediate, specific feedback</label></div>
+<div class="chk-item"><input type="checkbox" id="ck18" data-pillar="p3"><label for="ck18">I use gamification</label></div>
+<div class="chk-item"><input type="checkbox" id="ck19" data-pillar="p3"><label for="ck19">I balance routine with novelty</label></div>
+</div>
+
+<div class="chk-group" data-p="p4"><h3>Pillar 4 — Classroom Culture</h3>
+<div class="prog-mini"><div class="track"><div class="fill" id="fill-p4"></div></div><span class="pct" id="pct-p4">0%</span></div>
+<div class="chk-item"><input type="checkbox" id="ck20" data-pillar="p4"><label for="ck20">I connect personally with students</label></div>
+<div class="chk-item"><input type="checkbox" id="ck21" data-pillar="p4"><label for="ck21">I co-create and reinforce norms</label></div>
+<div class="chk-item"><input type="checkbox" id="ck22" data-pillar="p4"><label for="ck22">I use restorative practices</label></div>
+<div class="chk-item"><input type="checkbox" id="ck23" data-pillar="p4"><label for="ck23">My environment is welcoming</label></div>
+</div>
+<button class="btn btn-secondary" onclick="resetChecklist()">Reset All</button>
+</div>
+</div>
+
+<!-- EXPORT -->
+<div class="tab" id="tab-export">
+<div class="card">
+<h2>Export & Print</h2>
+<p style="font-size:.9rem;margin-bottom:14px">Export your lesson plan or blueprint data.</p>
+<button class="btn btn-primary" onclick="exportLessonText()">Copy Lesson Plan as Text</button>
+<button class="btn btn-primary" onclick="bpExportCSV()">Export Blueprint as CSV</button>
+<button class="btn btn-secondary" onclick="window.print()">Print Current View</button>
+</div>
+</div>
+
+<footer><strong>E² Teaching Framework</strong> — Every Student Has the Right to Understand</footer>
+
+<script>
+// Tabs
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// Lesson plan save/load
+const LP_FIELDS=['lp_subject','lp_grade','lp_topic','lp_duration','lp_date','lp_objectives','lp_hook','lp_teach','lp_practice','lp_connect','lp_reflect','lp_auditory','lp_visual','lp_kinesthetic','lp_struggling','lp_advanced','lp_cultural','lp_curiosity','lp_participation','lp_purpose','lp_feedback','lp_gamification','lp_routine','lp_relationship','lp_norms','lp_restorative','lp_assessment','lp_success','lp_materials','lp_tech','lp_links'];
+function saveLP(){const d={};LP_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});localStorage.setItem('e2_lp',JSON.stringify(d));}
+function loadLP(){const s=localStorage.getItem('e2_lp');if(s){const d=JSON.parse(s);Object.keys(d).forEach(id=>{const el=document.getElementById(id);if(el)el.value=d[id];});}}
+function newLessonPlan(){if(!confirm('Clear current lesson plan?'))return;LP_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});saveLP();}
+function exportLessonText(){
+  let t='E² LESSON PLAN\n'+'='.repeat(40)+'\n\n';
+  LP_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&el.value.trim())t+=id.replace('lp_','').toUpperCase()+': '+el.value+'\n\n';});
+  navigator.clipboard.writeText(t).then(()=>alert('Copied!')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+t+'</pre>');});
+}
+document.querySelectorAll('#tab-planner input,#tab-planner textarea').forEach(el=>el.addEventListener('input',()=>{clearTimeout(window._lpt);window._lpt=setTimeout(saveLP,600);}));
+
+// Blueprint
+const BP_COLS=['theme','obj1','obj2','links','nearpod','flip','cw','hw','assess','revised','guide','comments'];
+let bpWeeks=[];
+function bpEmpty(){const w={};BP_COLS.forEach(c=>w[c]='');return w;}
+function bpRender(){
+  const tb=document.getElementById('bpBody');
+  tb.innerHTML='';
+  bpWeeks.forEach((w,i)=>{
+    const tr=document.createElement('tr');
+    const tdw=document.createElement('td');tdw.textContent=i+1;tr.appendChild(tdw);
+    BP_COLS.forEach(c=>{
+      const td=document.createElement('td');
+      const ta=document.createElement('textarea');
+      ta.value=w[c]||'';
+      ta.addEventListener('input',()=>{bpWeeks[i][c]=ta.value;bpSave();});
+      td.appendChild(ta);tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+}
+function bpSave(){localStorage.setItem('e2_bp',JSON.stringify({weeks:bpWeeks,subj:document.getElementById('bp_subj').value,teacher:document.getElementById('bp_teacher').value}));}
+function bpLoad(){
+  const s=localStorage.getItem('e2_bp');
+  if(s){const d=JSON.parse(s);bpWeeks=d.weeks||[];if(d.subj)document.getElementById('bp_subj').value=d.subj;if(d.teacher)document.getElementById('bp_teacher').value=d.teacher;}
+  if(bpWeeks.length===0){for(let i=0;i<8;i++)bpWeeks.push(bpEmpty());}
+  bpRender();
+}
+function bpAdd(){bpWeeks.push(bpEmpty());bpRender();bpSave();}
+function bpRemove(){if(bpWeeks.length>1&&confirm('Remove last week?')){bpWeeks.pop();bpRender();bpSave();}}
+function bpExportCSV(){
+  let csv='\uFEFFWeek,Theme,Lesson 1 Objective,Lesson 2 Objective,Lesson Links,Nearpod Links,Flip Video,Classwork,Homework,Assessment,Revised HW/CW/Quiz,Teachers Guide,Comments\n';
+  bpWeeks.forEach((w,i)=>{csv+=(i+1)+','+BP_COLS.map(c=>'"'+(w[c]||'').replace(/"/g,'""')+'"').join(',')+'\n';});
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='e2_blueprint.csv';a.click();
+}
+document.getElementById('bp_subj').addEventListener('input',bpSave);
+document.getElementById('bp_teacher').addEventListener('input',bpSave);
+
+// Checklist
+function saveChk(){const d={};document.querySelectorAll('.chk-item input').forEach(cb=>d[cb.id]=cb.checked);localStorage.setItem('e2_chk',JSON.stringify(d));}
+function loadChk(){const s=localStorage.getItem('e2_chk');if(s){const d=JSON.parse(s);Object.keys(d).forEach(id=>{const el=document.getElementById(id);if(el)el.checked=d[id];});}updateChkProg();}
+function updateChkProg(){
+  ['p1','p2','p3','p4'].forEach(p=>{
+    const all=document.querySelectorAll('input[data-pillar="'+p+'"]');
+    const c=document.querySelectorAll('input[data-pillar="'+p+'"]:checked');
+    const pct=Math.round((c.length/all.length)*100);
+    document.getElementById('fill-'+p).style.width=pct+'%';
+    document.getElementById('pct-'+p).textContent=pct+'%';
+  });
+  const allBoxes=document.querySelectorAll('.chk-item input');
+  const allChecked=document.querySelectorAll('.chk-item input:checked');
+  const pct=Math.round((allChecked.length/allBoxes.length)*100);
+  document.getElementById('fill-all').style.width=pct+'%';
+  document.getElementById('pct-all').textContent=pct+'%';
+}
+function resetChecklist(){if(!confirm('Reset checklist?'))return;document.querySelectorAll('.chk-item input').forEach(cb=>cb.checked=false);saveChk();updateChkProg();}
+document.querySelectorAll('.chk-item input').forEach(cb=>cb.addEventListener('change',()=>{saveChk();updateChkProg();}));
+
+// Init
+loadLP();bpLoad();loadChk();
+</script>
+</body>
+</html>

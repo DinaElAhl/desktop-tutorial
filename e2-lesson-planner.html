@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E² Lesson Plan Builder</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9;--lrose:#F0D5D3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
+.hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:40px 20px 30px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:6px}
+.hero p{font-size:.95rem;opacity:.9}
+.progress-bar-container{background:var(--cream);border-bottom:1px solid var(--peach);padding:14px 20px;position:sticky;top:0;z-index:100}
+.prog-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.prog-inner label{font-weight:600;font-size:.82rem;color:var(--terra);white-space:nowrap}
+.prog-track{flex:1;height:10px;background:var(--peach);border-radius:6px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:6px;transition:width .3s;width:0%}
+.prog-pct{font-weight:600;font-size:.82rem;min-width:36px;text-align:right}
+.container{max-width:820px;margin:0 auto;padding:24px 16px 60px}
+.toolbar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.toolbar button{background:var(--terra);color:#fff;border:none;border-radius:8px;padding:10px 20px;cursor:pointer;font-size:.85rem;font-weight:500;transition:background .2s}
+.toolbar button:hover{background:var(--clay)}
+.toolbar button.secondary{background:var(--rose)}
+.toolbar button.secondary:hover{background:var(--terra)}
+.section{background:var(--cream);border-radius:14px;padding:24px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid rgba(201,145,143,.15)}
+.section h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--clay);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--peach);display:flex;align-items:center;gap:10px}
+.section h2 .num{background:var(--terra);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:.85rem;color:var(--brown);margin-bottom:5px}
+.field .hint{font-size:.78rem;color:var(--rose);margin-bottom:5px;font-style:italic}
+input[type="text"],input[type="date"],select,textarea{width:100%;padding:10px 14px;border:1px solid var(--peach);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:#fff;color:var(--brown);transition:border-color .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,105,79,.12)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.bp-card{background:var(--sand);border-radius:10px;padding:18px;margin-bottom:14px;border-left:4px solid var(--terra)}
+.bp-card h3{font-size:.95rem;color:var(--terra);margin-bottom:4px}
+.bp-card .timing{font-size:.78rem;color:var(--rose);margin-bottom:8px}
+.examples-toggle{font-size:.8rem;color:var(--gold);cursor:pointer;text-decoration:underline;margin-bottom:8px;display:inline-block}
+.examples{display:none;background:var(--peach);border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:.82rem}
+.examples.show{display:block}
+.examples ul{padding-left:18px;margin:0}
+.examples li{margin-bottom:3px}
+.lever-check{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.lever-check input[type="checkbox"]{accent-color:var(--terra);width:18px;height:18px;margin-top:3px}
+.lever-check .lever-info{flex:1}
+.lever-check .lever-info strong{font-size:.88rem;color:var(--clay)}
+.lever-check textarea{margin-top:6px}
+footer{text-align:center;padding:24px;background:var(--brown);color:var(--peach);font-size:.82rem}
+@media print{.toolbar,.progress-bar-container,.examples-toggle{display:none}.section{box-shadow:none;border:1px solid #ddd;break-inside:avoid}body{font-size:10pt}.hero{padding:20px}}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>E² Lesson Plan Builder</h1>
+<p>Every Student Has the Right to Understand — It is never the student's problem. The teacher adapts first.</p>
+</div>
+<div class="progress-bar-container">
+<div class="prog-inner">
+<label>Completion:</label>
+<div class="prog-track"><div class="prog-fill" id="pFill"></div></div>
+<span class="prog-pct" id="pPct">0%</span>
+</div>
+</div>
+<div class="container">
+<div class="toolbar">
+<button onclick="newPlan()">+ New Lesson Plan</button>
+<button class="secondary" onclick="window.print()">Print / Export PDF</button>
+<button class="secondary" onclick="exportText()">Copy as Text</button>
+</div>
+
+<!-- SECTION 1: Basic Info -->
+<div class="section">
+<h2><span class="num">1</span> Lesson Information</h2>
+<div class="row">
+<div class="field"><label>Subject</label><input type="text" id="f_subject" placeholder="e.g., Mathematics, Arabic, Science"></div>
+<div class="field"><label>Grade Level</label><select id="f_grade"><option value="">Select grade...</option><option>KG</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option><option>Higher Ed</option></select></div>
+</div>
+<div class="row">
+<div class="field"><label>Unit / Topic</label><input type="text" id="f_topic" placeholder="e.g., Fractions, Surah Al-Fatiha, Plant Cells"></div>
+<div class="field"><label>Lesson Title</label><input type="text" id="f_title" placeholder="Give this lesson a name"></div>
+</div>
+<div class="row">
+<div class="field"><label>Duration</label><select id="f_duration"><option value="">Select...</option><option>30 minutes</option><option>45 minutes</option><option>60 minutes</option><option>90 minutes</option><option>Custom</option></select></div>
+<div class="field"><label>Date</label><input type="date" id="f_date"></div>
+</div>
+<div class="field"><label>Standards / Learning Objectives</label><div class="hint">What should students know or be able to do by the end?</div><textarea id="f_objectives" placeholder="Students will be able to (SWBAT)..."></textarea></div>
+</div>
+
+<!-- SECTION 2: 5-Part Blueprint -->
+<div class="section">
+<h2><span class="num">2</span> The 5-Part Blueprint — Lesson Design</h2>
+
+<div class="bp-card">
+<h3>&#127919; HOOK</h3><div class="timing">2-3 minutes</div>
+<span class="examples-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Show examples</span>
+<div class="examples"><ul><li>Mystery question or surprising fact</li><li>Short video clip or image</li><li>"What would happen if...?" scenario</li><li>Quick poll or provocative statement</li><li>Real-world problem to solve</li></ul></div>
+<div class="field"><label>How will you grab student attention?</label><textarea id="f_hook" placeholder="Describe your opening hook..."></textarea></div>
+</div>
+
+<div class="bp-card">
+<h3>&#128218; TEACH</h3><div class="timing">10-15 minutes</div>
+<span class="examples-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Show examples</span>
+<div class="examples"><ul><li>Direct instruction with visuals</li><li>Think-aloud modeling</li><li>Interactive lecture with questions</li><li>Demonstration or experiment</li><li>Chunked content with checks</li></ul></div>
+<div class="field"><label>How will you deliver the core content?</label><textarea id="f_teach" placeholder="Describe your teaching approach..."></textarea></div>
+</div>
+
+<div class="bp-card">
+<h3>&#9999;&#65039; PRACTICE</h3><div class="timing">15-20 minutes</div>
+<span class="examples-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Show examples</span>
+<div class="examples"><ul><li>Guided practice → independent work</li><li>Partner or group activities</li><li>Hands-on tasks or labs</li><li>Problem sets with scaffolding</li><li>Creative projects</li></ul></div>
+<div class="field"><label>What will students DO to practice?</label><textarea id="f_practice" placeholder="Describe student practice activities..."></textarea></div>
+</div>
+
+<div class="bp-card">
+<h3>&#128279; CONNECT</h3><div class="timing">5 minutes</div>
+<span class="examples-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Show examples</span>
+<div class="examples"><ul><li>Career connections</li><li>Cross-curricular links</li><li>Student personal experiences</li><li>Current events</li></ul></div>
+<div class="field"><label>How does this connect to real life?</label><textarea id="f_connect" placeholder="Link lesson to students' world..."></textarea></div>
+</div>
+
+<div class="bp-card">
+<h3>&#128173; REFLECT</h3><div class="timing">5 minutes</div>
+<span class="examples-toggle" onclick="this.nextElementSibling.classList.toggle('show')">Show examples</span>
+<div class="examples"><ul><li>Exit ticket</li><li>Journal entry</li><li>3-2-1 summary</li><li>"What stuck?" discussion</li><li>Quick quiz</li></ul></div>
+<div class="field"><label>How will students show understanding?</label><textarea id="f_reflect" placeholder="Describe reflection/closure activity..."></textarea></div>
+</div>
+</div>
+
+<!-- SECTION 3: Differentiation -->
+<div class="section">
+<h2><span class="num">3</span> Differentiation — Reaching Every Learner</h2>
+<div class="field"><label>&#128266; Auditory Strategies</label><div class="hint">Discussions, read-alouds, verbal instructions, songs, podcasts</div><textarea id="f_auditory" placeholder="How will you reach auditory learners?"></textarea></div>
+<div class="field"><label>&#128065; Visual Strategies</label><div class="hint">Diagrams, color-coding, videos, mind maps, anchor charts</div><textarea id="f_visual" placeholder="How will you reach visual learners?"></textarea></div>
+<div class="field"><label>&#9995; Kinesthetic Strategies</label><div class="hint">Hands-on, movement breaks, manipulatives, role-play, gallery walks</div><textarea id="f_kinesthetic" placeholder="How will you reach kinesthetic learners?"></textarea></div>
+<div class="field"><label>Support for Struggling Learners</label><div class="hint">What scaffolds will you provide?</div><textarea id="f_struggling" placeholder="Simplified tasks, extra support, visual aids..."></textarea></div>
+<div class="field"><label>Extension for Advanced Learners</label><div class="hint">How will you challenge them further?</div><textarea id="f_advanced" placeholder="Open-ended problems, leadership roles, deeper inquiry..."></textarea></div>
+<div class="field"><label>Cultural Connections</label><textarea id="f_cultural" placeholder="How will you honor diverse backgrounds?"></textarea></div>
+<div class="field"><label>Student Choice Options</label><textarea id="f_choice" placeholder="Where can students choose HOW to learn or demonstrate learning?"></textarea></div>
+</div>
+
+<!-- SECTION 4: Engagement -->
+<div class="section">
+<h2><span class="num">4</span> Engagement Strategy — 6 Levers</h2>
+<div class="lever-check"><input type="checkbox" id="lev1"><div class="lever-info"><strong>1. Curiosity</strong><textarea id="f_curiosity" placeholder="What mystery or question will drive curiosity?"></textarea></div></div>
+<div class="lever-check"><input type="checkbox" id="lev2"><div class="lever-info"><strong>2. Active Participation</strong><textarea id="f_participation" placeholder="What technique ensures ALL students participate?"></textarea></div></div>
+<div class="lever-check"><input type="checkbox" id="lev3"><div class="lever-info"><strong>3. Purpose</strong><textarea id="f_purpose" placeholder="How will you explain WHY this matters?"></textarea></div></div>
+<div class="lever-check"><input type="checkbox" id="lev4"><div class="lever-info"><strong>4. Feedback</strong><textarea id="f_feedback" placeholder="How will you give immediate, specific feedback?"></textarea></div></div>
+<div class="lever-check"><input type="checkbox" id="lev5"><div class="lever-info"><strong>5. Gamification</strong><textarea id="f_gamification" placeholder="Any game elements, competitions, or rewards?"></textarea></div></div>
+<div class="lever-check"><input type="checkbox" id="lev6"><div class="lever-info"><strong>6. Routine & Novelty</strong><textarea id="f_routine" placeholder="What's familiar (routine) and what's new (novelty)?"></textarea></div></div>
+</div>
+
+<!-- SECTION 5: Classroom Culture -->
+<div class="section">
+<h2><span class="num">5</span> Classroom Culture</h2>
+<div class="field"><label>Relationship Moment</label><textarea id="f_relationship" placeholder="How will you connect personally with students today?"></textarea></div>
+<div class="field"><label>Norms Check</label><textarea id="f_norms" placeholder="Which classroom norm will you reinforce?"></textarea></div>
+<div class="field"><label>Restorative Plan</label><textarea id="f_restorative" placeholder="If behavior issues arise, what's your restorative approach?"></textarea></div>
+<div class="field"><label>Environment Setup</label><textarea id="f_environment" placeholder="How is your room set up for this lesson?"></textarea></div>
+</div>
+
+<!-- SECTION 6: Assessment -->
+<div class="section">
+<h2><span class="num">6</span> Assessment</h2>
+<div class="row">
+<div class="field"><label>Formative Assessment Method</label><select id="f_assessmethod"><option value="">Select...</option><option>Observation</option><option>Exit Ticket</option><option>Quiz</option><option>Discussion</option><option>Peer Assessment</option><option>Self-Assessment</option><option>Project-Based</option><option>Other</option></select></div>
+<div class="field"><label>Success Criteria</label><textarea id="f_success" placeholder="How will you know students understood?"></textarea></div>
+</div>
+<div class="field"><label>Follow-up Plan</label><div class="hint">What if students DON'T understand? Remember: it's our job to adapt.</div><textarea id="f_followup" placeholder="Re-teach strategy, small group intervention, alternative approach..."></textarea></div>
+</div>
+
+<!-- SECTION 7: Materials -->
+<div class="section">
+<h2><span class="num">7</span> Materials & Resources</h2>
+<div class="row">
+<div class="field"><label>Materials Needed</label><textarea id="f_materials" placeholder="Textbooks, handouts, manipulatives..."></textarea></div>
+<div class="field"><label>Technology Tools</label><textarea id="f_tech" placeholder="Nearpod, Flip, Kahoot, projector..."></textarea></div>
+</div>
+<div class="row">
+<div class="field"><label>Links & Resources</label><textarea id="f_links" placeholder="URLs to videos, articles, activities..."></textarea></div>
+<div class="field"><label>Handouts / Worksheets</label><textarea id="f_handouts" placeholder="List any printable materials..."></textarea></div>
+</div>
+</div>
+</div>
+
+<footer><strong>E² Teaching Framework</strong> — Every Student Has the Right to Understand</footer>
+
+<script>
+const SAVE_KEY='e2_lesson_plan';
+const fields=['f_subject','f_grade','f_topic','f_title','f_duration','f_date','f_objectives','f_hook','f_teach','f_practice','f_connect','f_reflect','f_auditory','f_visual','f_kinesthetic','f_struggling','f_advanced','f_cultural','f_choice','f_curiosity','f_participation','f_purpose','f_feedback','f_gamification','f_routine','f_relationship','f_norms','f_restorative','f_environment','f_assessmethod','f_success','f_followup','f_materials','f_tech','f_links','f_handouts'];
+let saveTimer;
+
+function save(){
+  const data={};
+  fields.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value;});
+  localStorage.setItem(SAVE_KEY,JSON.stringify(data));
+}
+
+function load(){
+  const d=localStorage.getItem(SAVE_KEY);
+  if(d){const data=JSON.parse(d);Object.keys(data).forEach(id=>{const el=document.getElementById(id);if(el)el.value=data[id];});}
+  updateProgress();
+}
+
+function debounceSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{save();updateProgress();},1500);}
+
+function updateProgress(){
+  let filled=0,total=fields.length;
+  fields.forEach(id=>{const el=document.getElementById(id);if(el&&el.value.trim())filled++;});
+  const pct=Math.round((filled/total)*100);
+  document.getElementById('pFill').style.width=pct+'%';
+  document.getElementById('pPct').textContent=pct+'%';
+}
+
+function newPlan(){
+  if(!confirm('Start a new lesson plan? Current data will be cleared.'))return;
+  fields.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  localStorage.removeItem(SAVE_KEY);updateProgress();
+}
+
+function exportText(){
+  let txt='E² LESSON PLAN\n'+('='.repeat(40))+'\n\n';
+  const labels={'f_subject':'Subject','f_grade':'Grade Level','f_topic':'Unit/Topic','f_title':'Lesson Title','f_duration':'Duration','f_date':'Date','f_objectives':'Objectives','f_hook':'HOOK','f_teach':'TEACH','f_practice':'PRACTICE','f_connect':'CONNECT','f_reflect':'REFLECT','f_auditory':'Auditory Strategies','f_visual':'Visual Strategies','f_kinesthetic':'Kinesthetic Strategies','f_struggling':'Struggling Learners Support','f_advanced':'Advanced Learners Extension','f_cultural':'Cultural Connections','f_choice':'Student Choice','f_curiosity':'Curiosity','f_participation':'Active Participation','f_purpose':'Purpose','f_feedback':'Feedback','f_gamification':'Gamification','f_routine':'Routine & Novelty','f_relationship':'Relationship Moment','f_norms':'Norms Check','f_restorative':'Restorative Plan','f_environment':'Environment','f_assessmethod':'Assessment Method','f_success':'Success Criteria','f_followup':'Follow-up Plan','f_materials':'Materials','f_tech':'Technology','f_links':'Links/Resources','f_handouts':'Handouts'};
+  fields.forEach(id=>{const el=document.getElementById(id);if(el&&el.value.trim()){txt+=labels[id]+': '+el.value.trim()+'\n\n';}});
+  txt+='\n---\nE² Teaching Framework — Every Student Has the Right to Understand';
+  navigator.clipboard.writeText(txt).then(()=>alert('Lesson plan copied to clipboard!')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+txt+'</pre>');});
+}
+
+document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',debounceSave));
+load();
+</script>
+</body>
+</html>
