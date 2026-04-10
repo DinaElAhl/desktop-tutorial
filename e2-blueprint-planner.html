@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E² Blueprint & LMS Planner</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.5}
+.hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:32px 20px 24px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
+.hero p{font-size:.9rem;opacity:.9}
+.toolbar{background:var(--cream);border-bottom:1px solid var(--peach);padding:16px 20px}
+.tool-inner{max-width:1400px;margin:0 auto}
+.tool-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;align-items:end}
+.tool-field{display:flex;flex-direction:column;gap:3px}
+.tool-field label{font-size:.75rem;font-weight:600;color:var(--terra)}
+.tool-field input,.tool-field select{padding:7px 12px;border:1px solid var(--peach);border-radius:6px;font-size:.85rem;background:#fff}
+.tool-field input:focus,.tool-field select:focus{outline:none;border-color:var(--terra)}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.btn{padding:8px 18px;border:none;border-radius:7px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s}
+.btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--clay)}
+.btn-secondary{background:var(--rose);color:#fff}.btn-secondary:hover{background:var(--terra)}
+.btn-danger{background:#d9534f;color:#fff}.btn-danger:hover{background:#c9302c}
+.btn-outline{background:transparent;border:1.5px solid var(--terra);color:var(--terra)}.btn-outline:hover{background:var(--terra);color:#fff}
+
+.table-wrap{overflow-x:auto;padding:16px;max-width:100vw}
+table{border-collapse:collapse;width:100%;min-width:1600px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+thead th{background:var(--terra);color:#fff;padding:10px 8px;font-size:.75rem;font-weight:600;text-align:left;position:sticky;top:0;z-index:10;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15)}
+thead th:first-child{position:sticky;left:0;z-index:20;background:var(--clay)}
+tbody td{padding:4px;border-bottom:1px solid var(--peach);border-right:1px solid #f0e0d6;vertical-align:top}
+tbody td:first-child{position:sticky;left:0;background:var(--cream);z-index:5;font-weight:600;text-align:center;font-size:.9rem;color:var(--terra);min-width:50px}
+tbody tr:nth-child(even) td{background:#fff}
+tbody tr:nth-child(odd) td{background:var(--cream)}
+tbody tr:nth-child(even) td:first-child{background:#fff}
+tbody tr:nth-child(odd) td:first-child{background:var(--cream)}
+tbody tr:hover td{background:var(--peach) !important}
+td textarea{width:100%;min-height:60px;border:1px solid transparent;border-radius:4px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:.8rem;resize:vertical;background:transparent;color:var(--brown);transition:border-color .2s}
+td textarea:focus{border-color:var(--gold);background:#fff;outline:none;box-shadow:0 0 0 2px rgba(212,168,67,.15)}
+td textarea::placeholder{color:var(--rose);font-size:.78rem}
+
+.search-bar{max-width:1400px;margin:12px auto 0;padding:0 20px}
+.search-bar input{width:100%;max-width:400px;padding:8px 14px;border:1px solid var(--peach);border-radius:8px;font-size:.85rem}
+.search-bar input:focus{outline:none;border-color:var(--terra)}
+
+.card-view{display:none;padding:16px}
+.week-card{background:var(--cream);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);border-left:4px solid var(--terra)}
+.week-card h3{color:var(--terra);font-size:1rem;margin-bottom:12px}
+.week-card .card-field{margin-bottom:10px}
+.week-card .card-field label{font-size:.78rem;font-weight:600;color:var(--clay);display:block;margin-bottom:3px}
+.week-card .card-field textarea{width:100%;min-height:40px;padding:6px 10px;border:1px solid var(--peach);border-radius:6px;font-size:.82rem;font-family:'Inter',sans-serif}
+
+.view-toggle{display:none}
+@media(max-width:768px){.view-toggle{display:inline-flex}}
+
+footer{text-align:center;padding:24px;background:var(--brown);color:var(--peach);font-size:.82rem;margin-top:20px}
+@media print{
+  .toolbar,.search-bar,.btn-row,.view-toggle{display:none}
+  .hero{padding:16px}
+  table{min-width:auto;font-size:8pt}
+  thead th{padding:6px 4px;font-size:7pt}
+  td textarea{font-size:7pt;min-height:auto;border:none;padding:2px}
+  @page{size:landscape;margin:.5cm}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>E² Blueprint & LMS Planner</h1>
+<p>Every Student Has the Right to Understand — Plan your entire term at a glance</p>
+</div>
+
+<div class="toolbar">
+<div class="tool-inner">
+<div class="tool-row">
+<div class="tool-field"><label>Subject / Course</label><input type="text" id="meta_subject" placeholder="e.g., Arabic Language"></div>
+<div class="tool-field"><label>Grade Level</label><input type="text" id="meta_grade" placeholder="e.g., Grade 5"></div>
+<div class="tool-field"><label>Term / Semester</label><select id="meta_term"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Semester 1</option><option>Semester 2</option><option>Full Year</option></select></div>
+<div class="tool-field"><label>Teacher</label><input type="text" id="meta_teacher" placeholder="Teacher name"></div>
+<div class="tool-field"><label>School</label><input type="text" id="meta_school" placeholder="School name"></div>
+<div class="tool-field"><label>Academic Year</label><input type="text" id="meta_year" placeholder="e.g., 2025-2026"></div>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="addWeek()">+ Add Week</button>
+<button class="btn btn-outline" onclick="removeLastWeek()">- Remove Last Week</button>
+<button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+<button class="btn btn-secondary" onclick="window.print()">Print</button>
+<button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+<button class="btn btn-outline view-toggle" onclick="toggleView()">Toggle Card/Table View</button>
+</div>
+</div>
+</div>
+
+<div class="search-bar"><input type="text" id="searchBox" placeholder="Search across all weeks..." oninput="searchTable()"></div>
+
+<div class="table-wrap" id="tableView">
+<table id="blueprintTable">
+<thead><tr>
+<th>Week</th>
+<th>Theme</th>
+<th>Lesson 1 Objective</th>
+<th>Lesson 2 Objective</th>
+<th>Lesson Links</th>
+<th>Nearpod Version Links</th>
+<th>Flip Video</th>
+<th>Classwork</th>
+<th>Homework</th>
+<th>Assessment</th>
+<th>Revised HW/CW/Quiz<br>(Teacher Revision)</th>
+<th>Teachers Guide /<br>Resources Per Unit</th>
+<th>Comments for<br>Revised Comments</th>
+</tr></thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div class="card-view" id="cardView"></div>
+
+<footer><strong>E² Teaching Framework</strong> — Every Student Has the Right to Understand</footer>
+
+<script>
+const SAVE_KEY='e2_blueprint';
+const COLS=['theme','obj1','obj2','links','nearpod','flip','classwork','homework','assessment','revised','guide','comments'];
+const COL_LABELS=['Theme','Lesson 1 Objective','Lesson 2 Objective','Lesson Links','Nearpod Version Links','Flip Video','Classwork','Homework','Assessment','Revised HW/CW/Quiz','Teachers Guide/Resources','Comments'];
+const COL_PLACEHOLDERS=['Unit theme or topic...','SWBAT...','SWBAT...','URLs to lesson materials...','Nearpod lesson URLs...','Flip video links...','In-class activities...','Assigned homework...','Quiz, test, project...','Teacher revision notes...','Teaching guides, resources...','Additional notes...'];
+let weeks=[];
+let currentView='table';
+
+function init(){
+  const saved=localStorage.getItem(SAVE_KEY);
+  if(saved){
+    const data=JSON.parse(saved);
+    weeks=data.weeks||[];
+    if(data.meta){['meta_subject','meta_grade','meta_term','meta_teacher','meta_school','meta_year'].forEach(id=>{const el=document.getElementById(id);if(el&&data.meta[id])el.value=data.meta[id];});}
+  }
+  if(weeks.length===0){for(let i=0;i<16;i++)weeks.push(emptyWeek());}
+  render();
+}
+
+function emptyWeek(){const w={};COLS.forEach(c=>w[c]='');return w;}
+
+function save(){
+  const meta={};
+  ['meta_subject','meta_grade','meta_term','meta_teacher','meta_school','meta_year'].forEach(id=>{meta[id]=document.getElementById(id).value;});
+  localStorage.setItem(SAVE_KEY,JSON.stringify({weeks,meta}));
+}
+
+function render(){renderTable();renderCards();}
+
+function renderTable(){
+  const tbody=document.getElementById('tableBody');
+  tbody.innerHTML='';
+  weeks.forEach((w,i)=>{
+    const tr=document.createElement('tr');
+    const tdw=document.createElement('td');
+    tdw.textContent=i+1;
+    tr.appendChild(tdw);
+    COLS.forEach((col,ci)=>{
+      const td=document.createElement('td');
+      const ta=document.createElement('textarea');
+      ta.value=w[col]||'';
+      ta.placeholder=COL_PLACEHOLDERS[ci];
+      ta.addEventListener('input',()=>{weeks[i][col]=ta.value;save();});
+      td.appendChild(ta);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCards(){
+  const container=document.getElementById('cardView');
+  container.innerHTML='';
+  weeks.forEach((w,i)=>{
+    const card=document.createElement('div');
+    card.className='week-card';
+    let html='<h3>Week '+(i+1)+'</h3>';
+    COLS.forEach((col,ci)=>{
+      html+='<div class="card-field"><label>'+COL_LABELS[ci]+'</label><textarea placeholder="'+COL_PLACEHOLDERS[ci]+'" data-week="'+i+'" data-col="'+col+'">'+(w[col]||'')+'</textarea></div>';
+    });
+    card.innerHTML=html;
+    card.querySelectorAll('textarea').forEach(ta=>{
+      ta.addEventListener('input',()=>{const wi=parseInt(ta.dataset.week);weeks[wi][ta.dataset.col]=ta.value;save();});
+    });
+    container.appendChild(card);
+  });
+}
+
+function addWeek(){weeks.push(emptyWeek());render();save();}
+function removeLastWeek(){if(weeks.length>1&&confirm('Remove the last week?')){weeks.pop();render();save();}}
+function clearAll(){if(confirm('Clear ALL data? This cannot be undone.')){weeks=[];for(let i=0;i<16;i++)weeks.push(emptyWeek());['meta_subject','meta_grade','meta_term','meta_teacher','meta_school','meta_year'].forEach(id=>document.getElementById(id).value='');render();save();}}
+
+function toggleView(){
+  if(currentView==='table'){
+    document.getElementById('tableView').style.display='none';
+    document.getElementById('cardView').style.display='block';
+    currentView='card';
+  } else {
+    document.getElementById('tableView').style.display='block';
+    document.getElementById('cardView').style.display='none';
+    currentView='table';
+  }
+}
+
+function searchTable(){
+  const q=document.getElementById('searchBox').value.toLowerCase();
+  const rows=document.querySelectorAll('#tableBody tr');
+  rows.forEach(row=>{
+    const text=row.textContent.toLowerCase();
+    row.style.display=text.includes(q)?'':'none';
+  });
+}
+
+function exportCSV(){
+  const meta=[document.getElementById('meta_subject').value,document.getElementById('meta_grade').value,document.getElementById('meta_term').value,document.getElementById('meta_teacher').value,document.getElementById('meta_school').value,document.getElementById('meta_year').value];
+  let csv='\uFEFF';
+  csv+='Subject,Grade,Term,Teacher,School,Academic Year\n';
+  csv+=meta.map(v=>'"'+v.replace(/"/g,'""')+'"').join(',')+'\n\n';
+  csv+='Week,'+COL_LABELS.map(l=>'"'+l+'"').join(',')+'\n';
+  weeks.forEach((w,i)=>{
+    csv+=(i+1)+','+COLS.map(c=>'"'+(w[c]||'').replace(/"/g,'""')+'"').join(',')+'\n';
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='e2_blueprint_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();URL.revokeObjectURL(url);
+}
+
+document.querySelectorAll('.toolbar input,.toolbar select').forEach(el=>el.addEventListener('input',save));
+init();
+</script>
+</body>
+</html>

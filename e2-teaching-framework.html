@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E² Teaching Framework — Reference Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --terracotta: #C1694F;
+    --clay: #B7553B;
+    --dusty-rose: #C9918F;
+    --sand: #FAF0E6;
+    --gold: #D4A843;
+    --brown: #3D2B1F;
+    --cream: #FFF8F0;
+    --peach: #FFDAB9;
+    --light-rose: #F0D5D3;
+    --soft-terra: #E8A690;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--sand);
+    color: var(--brown);
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--terracotta), var(--clay) 50%, var(--dusty-rose));
+    color: var(--cream);
+    text-align: center;
+    padding: 60px 24px 50px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    opacity: 0.92;
+    margin-bottom: 18px;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px;
+    padding: 8px 28px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    background: var(--cream);
+    border-bottom: 1px solid var(--peach);
+    padding: 18px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-bar-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-bar-wrap label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    color: var(--terracotta);
+  }
+  .progress-track {
+    flex: 1;
+    height: 12px;
+    background: var(--peach);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+    border-radius: 8px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-text {
+    font-weight: 600;
+    font-size: 0.85rem;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  /* MANIFESTO */
+  .manifesto {
+    background: linear-gradient(135deg, var(--cream), var(--peach) 80%);
+    border: 2px solid var(--dusty-rose);
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .manifesto h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--clay);
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  .manifesto-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    text-align: left;
+  }
+  .manifesto-item {
+    background: var(--cream);
+    border-left: 4px solid var(--terracotta);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .manifesto-item strong { color: var(--clay); }
+
+  /* PILLAR SECTIONS */
+  .pillar {
+    margin-bottom: 40px;
+  }
+  .pillar-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--terracotta);
+  }
+  .pillar-num {
+    background: var(--terracotta);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .pillar-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--brown);
+  }
+  .pillar-header h2 span {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--dusty-rose);
+    margin-top: 2px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid rgba(201,145,143,0.2);
+  }
+  .card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+  .card p, .card li {
+    font-size: 0.92rem;
+    color: #5a4035;
+  }
+  .card ul {
+    padding-left: 20px;
+    margin-top: 6px;
+  }
+  .card li { margin-bottom: 4px; }
+
+  /* BLUEPRINT FLOW */
+  .blueprint-flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .bp-step {
+    background: var(--cream);
+    border-top: 4px solid var(--terracotta);
+    border-radius: 10px;
+    padding: 16px 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .bp-step .icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .bp-step h4 {
+    font-size: 0.9rem;
+    color: var(--clay);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .bp-step p { font-size: 0.8rem; color: #7a5f52; }
+
+  /* LEARNING TYPES */
+  .type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .type-card {
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .type-card.auditory { background: linear-gradient(135deg, #F5E1D0, #FAEADE); border-left: 4px solid var(--gold); }
+  .type-card.visual { background: linear-gradient(135deg, #F0D5D3, #F8E5E3); border-left: 4px solid var(--dusty-rose); }
+  .type-card.kinesthetic { background: linear-gradient(135deg, #E8D5C4, #F2E4D8); border-left: 4px solid var(--terracotta); }
+  .type-card h4 { font-size: 0.95rem; margin-bottom: 6px; color: var(--brown); }
+  .type-card ul { padding-left: 18px; font-size: 0.88rem; }
+  .type-card li { margin-bottom: 3px; color: #5a4035; }
+
+  /* LEVER GRID */
+  .lever-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 14px;
+  }
+  .lever {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid rgba(201,145,143,0.15);
+  }
+  .lever-num {
+    display: inline-block;
+    background: var(--terracotta);
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  .lever h4 { display: inline; font-size: 0.95rem; color: var(--clay); }
+  .lever p { font-size: 0.88rem; color: #5a4035; margin-top: 8px; }
+
+  /* CHECKLIST */
+  .checklist-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 3px solid var(--dusty-rose);
+  }
+  .checklist-section > h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--clay);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .checklist-group {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .checklist-group h3 {
+    font-size: 1rem;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--peach);
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .checklist-item input[type="checkbox"] {
+    accent-color: var(--terracotta);
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .checklist-item label {
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .checklist-item input:checked + label {
+    text-decoration: line-through;
+    color: var(--dusty-rose);
+  }
+  .reset-btn {
+    display: block;
+    margin: 20px auto 0;
+    background: var(--dusty-rose);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .reset-btn:hover { background: var(--clay); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--brown);
+    color: var(--peach);
+    font-size: 0.85rem;
+  }
+  footer strong { color: var(--gold); }
+
+  /* PRINT */
+  @media print {
+    .progress-section { display: none; }
+    .hero { padding: 30px 20px; }
+    .reset-btn { display: none; }
+    .card, .checklist-group { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    body { font-size: 11pt; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .container { padding: 20px 14px 40px; }
+    .manifesto { padding: 24px 18px; }
+    .blueprint-flow { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">E² Teaching Framework</div>
+  <h1>Every Student Has the Right to Understand</h1>
+  <p class="subtitle">A comprehensive framework for teaching that reaches every learner — because understanding is not optional.</p>
+</section>
+
+<!-- PROGRESS BAR -->
+<div class="progress-section">
+  <div class="progress-bar-wrap">
+    <label>Checklist Progress:</label>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <h2>Student's Bill of Learning Rights</h2>
+    <div class="manifesto-items">
+      <div class="manifesto-item"><strong>1.</strong> Every student has the right to understand.</div>
+      <div class="manifesto-item"><strong>2.</strong> It is <strong>NEVER</strong> the student's problem if they can't focus or don't understand — the teacher adapts materials and methods.</div>
+      <div class="manifesto-item"><strong>3.</strong> Struggle is a signal, not a verdict.</div>
+      <div class="manifesto-item"><strong>4.</strong> The teacher adapts first.</div>
+      <div class="manifesto-item"><strong>5.</strong> No student is unteachable.</div>
+      <div class="manifesto-item"><strong>6.</strong> Understanding is not optional — it is every student's birthright.</div>
+    </div>
+  </section>
+
+  <!-- PILLAR 1 -->
+  <section class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">1</div>
+      <h2>Lesson Design <span>The 5-Part Blueprint</span></h2>
+    </div>
+
+    <div class="blueprint-flow">
+      <div class="bp-step">
+        <div class="icon">&#127919;</div>
+        <h4>Hook</h4>
+        <p>Grab attention in the first 2 minutes</p>
+      </div>
+      <div class="bp-step">
+        <div class="icon">&#128218;</div>
+        <h4>Teach</h4>
+        <p>Deliver core content with clarity</p>
+      </div>
+      <div class="bp-step">
+        <div class="icon">&#9999;&#65039;</div>
+        <h4>Practice</h4>
+        <p>Guided then independent practice</p>
+      </div>
+      <div class="bp-step">
+        <div class="icon">&#128279;</div>
+        <h4>Connect</h4>
+        <p>Link to real life &amp; student experiences</p>
+      </div>
+      <div class="bp-step">
+        <div class="icon">&#128173;</div>
+        <h4>Reflect</h4>
+        <p>Students show what they learned</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hook — Grab Attention (2 min)</h3>
+      <ul>
+        <li>Mystery question or surprising fact</li>
+        <li>Short video clip or image</li>
+        <li>Real-world problem or "What would happen if...?"</li>
+        <li>Quick poll or provocative statement</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Teach — Deliver Core Content (10-15 min)</h3>
+      <ul>
+        <li>Chunk information into digestible parts</li>
+        <li>Use visuals, diagrams, and examples</li>
+        <li>Model thinking aloud</li>
+        <li>Check for understanding frequently</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Practice — Active Learning (15-20 min)</h3>
+      <ul>
+        <li>Guided practice with teacher support first</li>
+        <li>Independent or partner work</li>
+        <li>Hands-on activities and problem-solving</li>
+        <li>Creative projects and collaborative tasks</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Connect — Real-World Relevance (5 min)</h3>
+      <ul>
+        <li>Career connections and cross-curricular links</li>
+        <li>Student personal experiences</li>
+        <li>Current events and community issues</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Reflect — Show Understanding (5 min)</h3>
+      <ul>
+        <li>Exit tickets or journal entries</li>
+        <li>3-2-1 summary (3 things learned, 2 connections, 1 question)</li>
+        <li>"What stuck?" class discussion</li>
+        <li>Quick quiz or share-pair activity</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Scaffolding Principles</h3>
+      <ul>
+        <li>Break complex tasks into manageable steps</li>
+        <li>Provide sentence starters and graphic organizers</li>
+        <li>Offer worked examples before independent work</li>
+        <li>Gradually release responsibility (I do, We do, You do)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PILLAR 2 -->
+  <section class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">2</div>
+      <h2>Differentiated Instruction <span>Reaching Every Learner</span></h2>
+    </div>
+
+    <div class="type-cards">
+      <div class="type-card auditory">
+        <h4>&#128266; Auditory Learners</h4>
+        <ul>
+          <li>Discussions and read-alouds</li>
+          <li>Verbal instructions and explanations</li>
+          <li>Songs, chants, and mnemonics</li>
+          <li>Podcasts and audio recordings</li>
+          <li>Think-aloud modeling</li>
+        </ul>
+      </div>
+      <div class="type-card visual">
+        <h4>&#128065; Visual Learners</h4>
+        <ul>
+          <li>Diagrams and infographics</li>
+          <li>Color-coding and highlighting</li>
+          <li>Videos and animations</li>
+          <li>Mind maps and anchor charts</li>
+          <li>Graphic organizers</li>
+        </ul>
+      </div>
+      <div class="type-card kinesthetic">
+        <h4>&#9995; Kinesthetic Learners</h4>
+        <ul>
+          <li>Hands-on activities and labs</li>
+          <li>Movement breaks and gestures</li>
+          <li>Manipulatives and models</li>
+          <li>Role-play and simulations</li>
+          <li>Gallery walks and stations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Tiered Tasks</h3>
+      <ul>
+        <li><strong>Struggling learners:</strong> Simplified tasks with extra scaffolding, visual aids, and more guided support</li>
+        <li><strong>On-level learners:</strong> Standard grade-level tasks with moderate independence</li>
+        <li><strong>Advanced learners:</strong> Extended challenges, open-ended problems, leadership roles</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Cultural Sensitivity</h3>
+      <ul>
+        <li>Use diverse examples reflecting students' backgrounds</li>
+        <li>Honor home languages and cultural practices</li>
+        <li>Connect content to student community and traditions</li>
+        <li>Avoid assumptions — ask and listen</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Student Choice</h3>
+      <ul>
+        <li>Menu boards: choose from activity options</li>
+        <li>Choice in HOW to demonstrate learning (write, draw, present, build)</li>
+        <li>Interest-based project topics</li>
+        <li>Flexible grouping: solo, partner, or team</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PILLAR 3 -->
+  <section class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">3</div>
+      <h2>Engagement & Motivation <span>The 6 Levers</span></h2>
+    </div>
+
+    <div class="lever-grid">
+      <div class="lever">
+        <span class="lever-num">1</span><h4>Curiosity</h4>
+        <p>Pose mysteries, use "What would happen if...?", create knowledge gaps that students want to fill.</p>
+      </div>
+      <div class="lever">
+        <span class="lever-num">2</span><h4>Active Participation</h4>
+        <p>Think-pair-share, mini whiteboards, polls, collaborative tasks — every student responds, not just volunteers.</p>
+      </div>
+      <div class="lever">
+        <span class="lever-num">3</span><h4>Purpose</h4>
+        <p>Explain the "why." Connect to student goals, future careers, and real-world applications.</p>
+      </div>
+      <div class="lever">
+        <span class="lever-num">4</span><h4>Feedback</h4>
+        <p>Immediate, specific, and growth-oriented. "You did X well. Next, try Y." Build feedback loops.</p>
+      </div>
+      <div class="lever">
+        <span class="lever-num">5</span><h4>Gamification</h4>
+        <p>Points, badges, friendly competitions, progress tracking, team challenges, and reward milestones.</p>
+      </div>
+      <div class="lever">
+        <span class="lever-num">6</span><h4>Routine & Novelty</h4>
+        <p>Predictable structures students can rely on, with surprising elements that keep things fresh.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLAR 4 -->
+  <section class="pillar">
+    <div class="pillar-header">
+      <div class="pillar-num">4</div>
+      <h2>Classroom Culture <span>Building a Safe Learning Space</span></h2>
+    </div>
+
+    <div class="card">
+      <h3>Relationships</h3>
+      <ul>
+        <li>Learn every student's name quickly</li>
+        <li>2x10 strategy: 2 minutes of personal conversation with one student for 10 consecutive days</li>
+        <li>Positive phone calls and notes home</li>
+        <li>Greet students at the door every day</li>
+        <li>Show genuine interest in their lives beyond academics</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Co-Created Norms</h3>
+      <ul>
+        <li>Involve students in setting class expectations</li>
+        <li>Frame norms positively ("We listen to understand" vs. "Don't talk")</li>
+        <li>Revisit and reflect on norms regularly</li>
+        <li>Display norms visually and reference them daily</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Restorative Discipline</h3>
+      <ul>
+        <li>Focus on repair over punishment</li>
+        <li>Reflection circles: "What happened? Who was affected? How can we fix it?"</li>
+        <li>Private conversations before public consequences</li>
+        <li>Empathy-building activities and perspective-taking</li>
+        <li>Teach self-regulation skills explicitly</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Physical Environment</h3>
+      <ul>
+        <li>Flexible seating arrangements for different activities</li>
+        <li>Organized, labeled materials accessible to all</li>
+        <li>Calming corner or cool-down space</li>
+        <li>Student work displayed proudly</li>
+        <li>Natural light, plants, and welcoming decor</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE CHECKLIST -->
+  <section class="checklist-section" id="checklist">
+    <h2>Implementation Checklist</h2>
+
+    <div class="checklist-group">
+      <h3>Pillar 1 — Lesson Design</h3>
+      <div class="checklist-item"><input type="checkbox" id="c1" data-group="p1"><label for="c1">I start every lesson with an engaging hook</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c2" data-group="p1"><label for="c2">I chunk content into digestible parts</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c3" data-group="p1"><label for="c3">I include guided AND independent practice</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c4" data-group="p1"><label for="c4">I connect lessons to real life</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c5" data-group="p1"><label for="c5">I end with reflection or exit tickets</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c6" data-group="p1"><label for="c6">I scaffold complex tasks with clear steps</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c7" data-group="p1"><label for="c7">I use the I Do / We Do / You Do model</label></div>
+    </div>
+
+    <div class="checklist-group">
+      <h3>Pillar 2 — Differentiated Instruction</h3>
+      <div class="checklist-item"><input type="checkbox" id="c8" data-group="p2"><label for="c8">I address auditory learners with discussions and verbal activities</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c9" data-group="p2"><label for="c9">I include visual supports (diagrams, charts, videos)</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c10" data-group="p2"><label for="c10">I incorporate movement and hands-on activities</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c11" data-group="p2"><label for="c11">I provide tiered tasks for different levels</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c12" data-group="p2"><label for="c12">I challenge advanced learners with extensions</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c13" data-group="p2"><label for="c13">I honor cultural diversity in my examples</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c14" data-group="p2"><label for="c14">I offer student choice in learning and assessment</label></div>
+    </div>
+
+    <div class="checklist-group">
+      <h3>Pillar 3 — Engagement & Motivation</h3>
+      <div class="checklist-item"><input type="checkbox" id="c15" data-group="p3"><label for="c15">I spark curiosity with questions and mysteries</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c16" data-group="p3"><label for="c16">I ensure ALL students participate actively</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c17" data-group="p3"><label for="c17">I explain WHY the lesson matters</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c18" data-group="p3"><label for="c18">I give immediate, specific feedback</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c19" data-group="p3"><label for="c19">I use gamification or reward elements</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c20" data-group="p3"><label for="c20">I balance routine with novelty</label></div>
+    </div>
+
+    <div class="checklist-group">
+      <h3>Pillar 4 — Classroom Culture</h3>
+      <div class="checklist-item"><input type="checkbox" id="c21" data-group="p4"><label for="c21">I connect personally with students daily</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c22" data-group="p4"><label for="c22">I co-create and reinforce class norms</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c23" data-group="p4"><label for="c23">I use restorative practices over punishment</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c24" data-group="p4"><label for="c24">My classroom environment is welcoming and organized</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c25" data-group="p4"><label for="c25">I greet students at the door</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c26" data-group="p4"><label for="c26">I display student work and celebrate progress</label></div>
+    </div>
+
+    <button class="reset-btn" onclick="resetChecklist()">Reset All Checkboxes</button>
+  </section>
+</div>
+
+<footer>
+  <strong>E² Teaching Framework</strong><br>
+  Every Student Has the Right to Understand
+</footer>
+
+<script>
+  const STORAGE_KEY = 'e2_checklist';
+
+  function loadChecklist() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      Object.keys(data).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.checked = data[id];
+      });
+    }
+    updateProgress();
+  }
+
+  function saveChecklist() {
+    const boxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const data = {};
+    boxes.forEach(b => data[b.id] = b.checked);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function updateProgress() {
+    const boxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const checked = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+    const pct = Math.round((checked / boxes.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+  }
+
+  function resetChecklist() {
+    if (!confirm('Reset all checkboxes? This cannot be undone.')) return;
+    document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(b => b.checked = false);
+    saveChecklist();
+    updateProgress();
+  }
+
+  document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(box => {
+    box.addEventListener('change', () => { saveChecklist(); updateProgress(); });
+  });
+
+  loadChecklist();
+</script>
+</body>
+</html>

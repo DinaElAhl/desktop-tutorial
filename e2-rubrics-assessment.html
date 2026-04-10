@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E² Rubrics & Assessment Tools</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
+.hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:36px 20px 28px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
+.hero p{font-size:.9rem;opacity:.9;max-width:600px;margin:0 auto}
+nav{background:var(--cream);border-bottom:2px solid var(--peach);display:flex;justify-content:center;gap:4px;padding:8px 12px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+nav button{padding:9px 20px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;background:transparent;color:var(--brown);transition:all .2s}
+nav button:hover{background:var(--peach)}
+nav button.active{background:var(--terra);color:#fff}
+.tab{display:none;max-width:880px;margin:0 auto;padding:24px 16px 60px}
+.tab.active{display:block}
+.card{background:var(--cream);border-radius:12px;padding:22px 24px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid rgba(201,145,143,.15)}
+.card h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--clay);margin-bottom:14px}
+.card h3{font-size:.95rem;color:var(--terra);margin:14px 0 8px}
+
+/* Rubric Table */
+.rubric-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:14px 0}
+.rubric-table th{background:var(--terra);color:#fff;padding:10px 8px;text-align:left;font-weight:600;font-size:.78rem}
+.rubric-table td{padding:10px 8px;border-bottom:1px solid var(--peach);cursor:pointer;transition:all .2s;vertical-align:top}
+.rubric-table td:first-child{font-weight:600;color:var(--clay);background:var(--cream);cursor:default;min-width:120px}
+.rubric-table td:not(:first-child):hover{background:var(--peach)}
+.rubric-table td.selected{background:var(--gold);color:var(--brown);font-weight:500;border-radius:4px}
+.rubric-table tr:nth-child(even) td{background:#fff}
+.rubric-table tr:nth-child(even) td:first-child{background:var(--cream)}
+.rubric-table tr:nth-child(even) td.selected{background:var(--gold)}
+
+.score-box{background:linear-gradient(135deg,var(--cream),var(--peach));border-radius:10px;padding:20px;text-align:center;margin:16px 0}
+.score-box .score{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--terra)}
+.score-box .label{font-size:.9rem;color:var(--brown);margin-top:4px}
+.score-box .level{font-size:1.1rem;font-weight:600;color:var(--clay);margin-top:6px}
+
+/* Checklist */
+.check-group{margin-bottom:20px}
+.check-group h3{font-size:.95rem;color:var(--terra);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--peach)}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0;cursor:pointer}
+.check-item input{accent-color:var(--terra);width:17px;height:17px;margin-top:2px;cursor:pointer}
+.check-item label{font-size:.88rem;cursor:pointer}
+.check-item input:checked+label{text-decoration:line-through;color:var(--rose)}
+.progress-mini{display:flex;align-items:center;gap:10px;margin:8px 0 16px}
+.progress-mini .track{flex:1;height:8px;background:var(--peach);border-radius:4px;overflow:hidden}
+.progress-mini .fill{height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:4px;transition:width .3s}
+.progress-mini .pct{font-size:.8rem;font-weight:600;min-width:36px}
+
+/* Quick-check generator */
+.gen-field{margin-bottom:12px}
+.gen-field label{display:block;font-weight:600;font-size:.82rem;margin-bottom:4px}
+.gen-field input,.gen-field select,.gen-field textarea{width:100%;padding:8px 12px;border:1px solid var(--peach);border-radius:7px;font-size:.88rem}
+.gen-field textarea{min-height:60px;resize:vertical}
+.gen-output{background:var(--cream);border:2px dashed var(--rose);border-radius:10px;padding:20px;margin-top:16px;display:none}
+.gen-output h4{color:var(--terra);margin-bottom:10px}
+.gen-output .template{background:#fff;border-radius:8px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold)}
+.gen-output .template h5{font-size:.85rem;color:var(--clay);margin-bottom:6px}
+.gen-output .template p,.gen-output .template textarea{font-size:.85rem}
+.gen-output textarea{width:100%;min-height:50px;border:1px solid var(--peach);border-radius:6px;padding:8px;font-family:'Inter',sans-serif}
+
+/* Observation form */
+.obs-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.obs-row{grid-template-columns:1fr}}
+.obs-field{margin-bottom:12px}
+.obs-field label{display:block;font-weight:600;font-size:.82rem;margin-bottom:4px;color:var(--brown)}
+.obs-field input,.obs-field select,.obs-field textarea{width:100%;padding:8px 12px;border:1px solid var(--peach);border-radius:7px;font-size:.88rem}
+.obs-field textarea{min-height:70px;resize:vertical}
+.obs-check{display:flex;align-items:flex-start;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px}
+.obs-check input[type="checkbox"]{accent-color:var(--terra);width:18px;height:18px;margin-top:2px}
+.obs-check .obs-detail{flex:1}
+.obs-check .obs-detail strong{font-size:.85rem;color:var(--clay);display:block;margin-bottom:4px}
+.obs-check .obs-detail textarea{width:100%;min-height:36px;padding:6px;border:1px solid var(--peach);border-radius:5px;font-size:.82rem}
+
+.btn{padding:9px 22px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;transition:all .2s;margin:4px}
+.btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--clay)}
+.btn-secondary{background:var(--rose);color:#fff}.btn-secondary:hover{background:var(--terra)}
+
+.tips{background:var(--peach);border-radius:10px;padding:16px;margin-top:16px}
+.tips h4{color:var(--clay);margin-bottom:8px;font-size:.9rem}
+.tips ul{padding-left:18px;font-size:.85rem}
+.tips li{margin-bottom:4px}
+
+footer{text-align:center;padding:24px;background:var(--brown);color:var(--peach);font-size:.82rem}
+@media print{nav,.btn{display:none}.tab{display:block !important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>E² Rubrics & Assessment Tools</h1>
+<p>When students struggle, it's a signal — not a verdict. These tools help you reflect, assess, and adapt.</p>
+</div>
+
+<nav>
+<button class="active" onclick="showTab('rubric',this)">Lesson Rubric</button>
+<button onclick="showTab('reflection',this)">Self-Reflection</button>
+<button onclick="showTab('quickcheck',this)">Quick-Check Generator</button>
+<button onclick="showTab('observation',this)">Observation Form</button>
+</nav>
+
+<!-- TAB 1: Rubric -->
+<div class="tab active" id="tab-rubric">
+<div class="card">
+<h2>Lesson Engagement Rubric</h2>
+<p style="font-size:.88rem;color:var(--rose);margin-bottom:14px">Click a cell to rate each criterion. Your score auto-calculates.</p>
+<div style="overflow-x:auto">
+<table class="rubric-table" id="rubricTable">
+<thead><tr><th>Criteria</th><th>1 — Beginning</th><th>2 — Developing</th><th>3 — Proficient</th><th>4 — Exemplary</th></tr></thead>
+<tbody>
+<tr data-row="hook"><td>Hook / Opening</td><td data-val="1">No hook; lesson starts with instructions only</td><td data-val="2">Brief attention-getter but not connected to content</td><td data-val="3">Engaging hook clearly connected to lesson content</td><td data-val="4">Creative, multi-sensory hook that sparks genuine curiosity</td></tr>
+<tr data-row="participation"><td>Student Participation</td><td data-val="1">Teacher talks >80% of the time</td><td data-val="2">Some student responses, mostly teacher-led</td><td data-val="3">Regular think-pair-share, discussions, activities</td><td data-val="4">All students actively engaged through varied methods</td></tr>
+<tr data-row="differentiation"><td>Differentiation</td><td data-val="1">One-size-fits-all delivery method</td><td data-val="2">Some visual aids added to instruction</td><td data-val="3">Multiple modalities addressed in lesson</td><td data-val="4">Fully differentiated with choice and tiered support</td></tr>
+<tr data-row="connection"><td>Real-World Connection</td><td data-val="1">No connection made to student lives</td><td data-val="2">Brief mention of relevance</td><td data-val="3">Clear connection explained by teacher</td><td data-val="4">Students discover and articulate connections themselves</td></tr>
+<tr data-row="assessment"><td>Formative Assessment</td><td data-val="1">No checks for understanding during lesson</td><td data-val="2">End-of-lesson assessment only</td><td data-val="3">Multiple check-ins during the lesson</td><td data-val="4">Continuous assessment with real-time adjustments</td></tr>
+<tr data-row="voice"><td>Student Voice / Choice</td><td data-val="1">No student input in learning process</td><td data-val="2">Limited choice in activities</td><td data-val="3">Students choose from provided options</td><td data-val="4">Students co-create learning paths</td></tr>
+</tbody>
+</table>
+</div>
+<div class="score-box" id="scoreBox">
+<div class="score" id="scoreNum">0 / 24</div>
+<div class="level" id="scoreLevel">Rate your lesson above</div>
+<div class="label">Click cells to select your rating for each criterion</div>
+</div>
+<button class="btn btn-secondary" onclick="resetRubric()">Reset Rubric</button>
+<button class="btn btn-primary" onclick="window.print()">Print Rubric</button>
+</div>
+</div>
+
+<!-- TAB 2: Self-Reflection -->
+<div class="tab" id="tab-reflection">
+<div class="card">
+<h2>Teacher Self-Reflection Checklist</h2>
+<p style="font-size:.88rem;color:var(--rose);margin-bottom:16px">Honestly assess your lesson. Check what you accomplished — unchecked items become your growth goals.</p>
+
+<div class="check-group" data-pillar="p1">
+<h3>Pillar 1 — Lesson Design</h3>
+<div class="progress-mini"><div class="track"><div class="fill" id="fill-p1"></div></div><span class="pct" id="pct-p1">0%</span></div>
+<div class="check-item"><input type="checkbox" id="r1" data-p="p1"><label for="r1">I started with an engaging hook</label></div>
+<div class="check-item"><input type="checkbox" id="r2" data-p="p1"><label for="r2">Content was chunked into digestible parts</label></div>
+<div class="check-item"><input type="checkbox" id="r3" data-p="p1"><label for="r3">Students had guided AND independent practice</label></div>
+<div class="check-item"><input type="checkbox" id="r4" data-p="p1"><label for="r4">I connected the lesson to real life</label></div>
+<div class="check-item"><input type="checkbox" id="r5" data-p="p1"><label for="r5">Students had time to reflect</label></div>
+<div class="check-item"><input type="checkbox" id="r6" data-p="p1"><label for="r6">I used scaffolding for complex tasks</label></div>
+</div>
+
+<div class="check-group" data-pillar="p2">
+<h3>Pillar 2 — Differentiated Instruction</h3>
+<div class="progress-mini"><div class="track"><div class="fill" id="fill-p2"></div></div><span class="pct" id="pct-p2">0%</span></div>
+<div class="check-item"><input type="checkbox" id="r7" data-p="p2"><label for="r7">I addressed auditory learners</label></div>
+<div class="check-item"><input type="checkbox" id="r8" data-p="p2"><label for="r8">I included visual supports</label></div>
+<div class="check-item"><input type="checkbox" id="r9" data-p="p2"><label for="r9">I incorporated movement/hands-on activities</label></div>
+<div class="check-item"><input type="checkbox" id="r10" data-p="p2"><label for="r10">I provided tiered support for struggling learners</label></div>
+<div class="check-item"><input type="checkbox" id="r11" data-p="p2"><label for="r11">I challenged advanced learners</label></div>
+<div class="check-item"><input type="checkbox" id="r12" data-p="p2"><label for="r12">I honored cultural diversity in my examples</label></div>
+<div class="check-item"><input type="checkbox" id="r13" data-p="p2"><label for="r13">I offered student choice</label></div>
+</div>
+
+<div class="check-group" data-pillar="p3">
+<h3>Pillar 3 — Engagement & Motivation</h3>
+<div class="progress-mini"><div class="track"><div class="fill" id="fill-p3"></div></div><span class="pct" id="pct-p3">0%</span></div>
+<div class="check-item"><input type="checkbox" id="r14" data-p="p3"><label for="r14">I sparked curiosity</label></div>
+<div class="check-item"><input type="checkbox" id="r15" data-p="p3"><label for="r15">ALL students participated actively</label></div>
+<div class="check-item"><input type="checkbox" id="r16" data-p="p3"><label for="r16">I explained WHY this lesson matters</label></div>
+<div class="check-item"><input type="checkbox" id="r17" data-p="p3"><label for="r17">I gave immediate, specific feedback</label></div>
+<div class="check-item"><input type="checkbox" id="r18" data-p="p3"><label for="r18">I used gamification or rewards</label></div>
+<div class="check-item"><input type="checkbox" id="r19" data-p="p3"><label for="r19">I balanced routine with novelty</label></div>
+</div>
+
+<div class="check-group" data-pillar="p4">
+<h3>Pillar 4 — Classroom Culture</h3>
+<div class="progress-mini"><div class="track"><div class="fill" id="fill-p4"></div></div><span class="pct" id="pct-p4">0%</span></div>
+<div class="check-item"><input type="checkbox" id="r20" data-p="p4"><label for="r20">I connected personally with at least one student</label></div>
+<div class="check-item"><input type="checkbox" id="r21" data-p="p4"><label for="r21">I reinforced classroom norms</label></div>
+<div class="check-item"><input type="checkbox" id="r22" data-p="p4"><label for="r22">I handled disruptions restoratively</label></div>
+<div class="check-item"><input type="checkbox" id="r23" data-p="p4"><label for="r23">My classroom environment was welcoming</label></div>
+</div>
+
+<div class="tips" id="reflTips" style="display:none">
+<h4>Growth Areas — Focus on These Next</h4>
+<ul id="tipsList"></ul>
+</div>
+
+<button class="btn btn-secondary" onclick="resetReflection()">Reset</button>
+<button class="btn btn-primary" onclick="window.print()">Print</button>
+</div>
+</div>
+
+<!-- TAB 3: Quick-Check Generator -->
+<div class="tab" id="tab-quickcheck">
+<div class="card">
+<h2>Quick-Check Assessment Generator</h2>
+<p style="font-size:.88rem;color:var(--rose);margin-bottom:16px">Enter your lesson details and generate formative assessment templates you can customize and print.</p>
+<div class="gen-field"><label>Subject</label><input type="text" id="gen_subject" placeholder="e.g., Science"></div>
+<div class="gen-field"><label>Topic</label><input type="text" id="gen_topic" placeholder="e.g., Photosynthesis"></div>
+<div class="gen-field"><label>Grade Level</label><input type="text" id="gen_grade" placeholder="e.g., Grade 7"></div>
+<div class="gen-field"><label>Learning Objective</label><textarea id="gen_objective" placeholder="Students will be able to..."></textarea></div>
+<button class="btn btn-primary" onclick="generateChecks()">Generate Assessment Templates</button>
+
+<div class="gen-output" id="genOutput">
+<h4>Your Assessment Templates</h4>
+<div class="template"><h5>Multiple-Choice Check #1</h5><textarea id="mc1" placeholder="Write your question here... A) ... B) ... C) ... D) ..."></textarea></div>
+<div class="template"><h5>Multiple-Choice Check #2</h5><textarea id="mc2" placeholder="Write your question here... A) ... B) ... C) ... D) ..."></textarea></div>
+<div class="template"><h5>Multiple-Choice Check #3</h5><textarea id="mc3" placeholder="Write your question here... A) ... B) ... C) ... D) ..."></textarea></div>
+<div class="template"><h5>Exit Ticket</h5><p style="font-size:.84rem;margin-bottom:6px" id="exitPrompt"></p><textarea placeholder="Customize this exit ticket prompt..."></textarea></div>
+<div class="template"><h5>Think-Pair-Share Question</h5><p style="font-size:.84rem" id="tpsPrompt"></p></div>
+<div class="template"><h5>"Show What You Know" Activity</h5><p style="font-size:.84rem" id="swykPrompt"></p></div>
+<button class="btn btn-primary" style="margin-top:12px" onclick="window.print()">Print Templates</button>
+</div>
+</div>
+</div>
+
+<!-- TAB 4: Observation Form -->
+<div class="tab" id="tab-observation">
+<div class="card">
+<h2>Classroom Observation Walkthrough Form</h2>
+<p style="font-size:.88rem;color:var(--rose);margin-bottom:16px">For administrators and coaches — observe through the lens of the E² Framework.</p>
+
+<h3 style="color:var(--terra);margin-bottom:12px">Observer & Teacher Info</h3>
+<div class="obs-row">
+<div class="obs-field"><label>Observer Name</label><input type="text" id="obs_observer" placeholder="Your name"></div>
+<div class="obs-field"><label>Teacher Name</label><input type="text" id="obs_teacher" placeholder="Teacher being observed"></div>
+</div>
+<div class="obs-row">
+<div class="obs-field"><label>Date</label><input type="date" id="obs_date"></div>
+<div class="obs-field"><label>Period / Time</label><input type="text" id="obs_period" placeholder="e.g., Period 3"></div>
+</div>
+<div class="obs-row">
+<div class="obs-field"><label>Subject</label><input type="text" id="obs_subject" placeholder="Subject taught"></div>
+<div class="obs-field"><label>Grade Level</label><input type="text" id="obs_grade" placeholder="Grade level"></div>
+</div>
+
+<h3 style="color:var(--terra);margin:20px 0 12px">Observation Checklist</h3>
+<div class="obs-check"><input type="checkbox" id="ob1"><div class="obs-detail"><strong>Evidence of engaging hook</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob2"><div class="obs-detail"><strong>Evidence of clear teaching / instruction</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob3"><div class="obs-detail"><strong>Evidence of student practice</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob4"><div class="obs-detail"><strong>Evidence of real-world connection</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob5"><div class="obs-detail"><strong>Evidence of reflection / closure</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob6"><div class="obs-detail"><strong>Evidence of differentiation</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob7"><div class="obs-detail"><strong>Evidence of active engagement strategies</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob8"><div class="obs-detail"><strong>Evidence of positive classroom culture</strong><textarea placeholder="Notes..."></textarea></div></div>
+<div class="obs-check"><input type="checkbox" id="ob9"><div class="obs-detail"><strong>Evidence of formative assessment</strong><textarea placeholder="Notes..."></textarea></div></div>
+
+<div class="obs-field" style="margin-top:16px"><label>Student Engagement Level (1-5)</label><select id="obs_engagement"><option value="">Select...</option><option>1 — Very Low</option><option>2 — Low</option><option>3 — Moderate</option><option>4 — High</option><option>5 — Very High</option></select></div>
+
+<h3 style="color:var(--terra);margin:20px 0 12px">Summary</h3>
+<div class="obs-field"><label>Strengths Observed</label><textarea id="obs_strengths" placeholder="What went well..."></textarea></div>
+<div class="obs-field"><label>Areas for Growth</label><textarea id="obs_growth" placeholder="Suggestions for improvement..."></textarea></div>
+<div class="obs-field"><label>Recommended Next Steps</label><textarea id="obs_next" placeholder="Action items for the teacher..."></textarea></div>
+<div class="obs-field"><label>Overall Rating</label><select id="obs_rating"><option value="">Select...</option><option>Exemplary</option><option>Proficient</option><option>Developing</option><option>Beginning</option></select></div>
+
+<button class="btn btn-primary" onclick="window.print()">Print Observation Report</button>
+<button class="btn btn-secondary" onclick="exportObservation()">Copy as Text</button>
+</div>
+</div>
+
+<footer><strong>E² Teaching Framework</strong> — Every Student Has the Right to Understand</footer>
+
+<script>
+// Tab switching
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Rubric
+const rubricState={};
+document.querySelectorAll('.rubric-table tbody td[data-val]').forEach(td=>{
+  td.addEventListener('click',()=>{
+    const row=td.parentElement.dataset.row;
+    td.parentElement.querySelectorAll('td[data-val]').forEach(c=>c.classList.remove('selected'));
+    td.classList.add('selected');
+    rubricState[row]=parseInt(td.dataset.val);
+    updateScore();
+    localStorage.setItem('e2_rubric',JSON.stringify(rubricState));
+  });
+});
+
+function updateScore(){
+  const vals=Object.values(rubricState);
+  const total=vals.reduce((a,b)=>a+b,0);
+  document.getElementById('scoreNum').textContent=total+' / 24';
+  let level='Rate your lesson above';
+  if(vals.length===6){
+    if(total>=21)level='Exemplary — Outstanding lesson!';
+    else if(total>=16)level='Proficient — Solid teaching';
+    else if(total>=11)level='Developing — Good foundation, keep growing';
+    else level='Beginning — Focus on the E² pillars';
+  }
+  document.getElementById('scoreLevel').textContent=level;
+}
+
+function resetRubric(){
+  if(!confirm('Reset all rubric ratings?'))return;
+  Object.keys(rubricState).forEach(k=>delete rubricState[k]);
+  document.querySelectorAll('.rubric-table td.selected').forEach(td=>td.classList.remove('selected'));
+  updateScore();localStorage.removeItem('e2_rubric');
+}
+
+// Load rubric
+const savedRubric=localStorage.getItem('e2_rubric');
+if(savedRubric){
+  const d=JSON.parse(savedRubric);
+  Object.keys(d).forEach(row=>{
+    rubricState[row]=d[row];
+    const tr=document.querySelector('tr[data-row="'+row+'"]');
+    if(tr){const td=tr.querySelector('td[data-val="'+d[row]+'"]');if(td)td.classList.add('selected');}
+  });
+  updateScore();
+}
+
+// Self-Reflection
+function updateReflectionProgress(){
+  ['p1','p2','p3','p4'].forEach(p=>{
+    const all=document.querySelectorAll('input[data-p="'+p+'"]');
+    const checked=document.querySelectorAll('input[data-p="'+p+'"]:checked');
+    const pct=Math.round((checked.length/all.length)*100);
+    document.getElementById('fill-'+p).style.width=pct+'%';
+    document.getElementById('pct-'+p).textContent=pct+'%';
+  });
+  showTips();
+  saveReflection();
+}
+
+function showTips(){
+  const unchecked=document.querySelectorAll('.check-item input:not(:checked)');
+  const tipsList=document.getElementById('tipsList');
+  tipsList.innerHTML='';
+  if(unchecked.length>0&&unchecked.length<23){
+    document.getElementById('reflTips').style.display='block';
+    unchecked.forEach(cb=>{
+      const li=document.createElement('li');
+      li.textContent=cb.nextElementSibling.textContent;
+      tipsList.appendChild(li);
+    });
+  } else {
+    document.getElementById('reflTips').style.display='none';
+  }
+}
+
+function saveReflection(){
+  const data={};
+  document.querySelectorAll('.check-item input').forEach(cb=>data[cb.id]=cb.checked);
+  localStorage.setItem('e2_reflection',JSON.stringify(data));
+}
+
+function loadReflection(){
+  const d=localStorage.getItem('e2_reflection');
+  if(d){const data=JSON.parse(d);Object.keys(data).forEach(id=>{const el=document.getElementById(id);if(el)el.checked=data[id];});}
+  updateReflectionProgress();
+}
+
+function resetReflection(){
+  if(!confirm('Reset self-reflection?'))return;
+  document.querySelectorAll('.check-item input').forEach(cb=>cb.checked=false);
+  updateReflectionProgress();
+}
+
+document.querySelectorAll('.check-item input').forEach(cb=>cb.addEventListener('change',updateReflectionProgress));
+loadReflection();
+
+// Quick-Check Generator
+function generateChecks(){
+  const subj=document.getElementById('gen_subject').value||'the subject';
+  const topic=document.getElementById('gen_topic').value||'the topic';
+  const grade=document.getElementById('gen_grade').value||'this grade level';
+  const obj=document.getElementById('gen_objective').value||'understand the key concepts';
+  document.getElementById('exitPrompt').textContent='Exit Ticket for '+topic+': "In 2-3 sentences, explain the most important thing you learned about '+topic+' today. What is one question you still have?"';
+  document.getElementById('tpsPrompt').textContent='Think-Pair-Share: "If you had to teach '+topic+' to a younger student, how would you explain it? Turn to your partner, share your explanation, then be ready to share the best version with the class."';
+  document.getElementById('swykPrompt').textContent='Choose ONE way to show what you know about '+topic+': (A) Draw a diagram or visual summary (B) Write a short paragraph explanation (C) Create 3 quiz questions with answers (D) Teach it to a partner and have them rate your explanation';
+  document.getElementById('genOutput').style.display='block';
+}
+
+// Observation export
+function exportObservation(){
+  let txt='E² CLASSROOM OBSERVATION REPORT\n'+('='.repeat(40))+'\n\n';
+  txt+='Observer: '+(document.getElementById('obs_observer').value||'N/A')+'\n';
+  txt+='Teacher: '+(document.getElementById('obs_teacher').value||'N/A')+'\n';
+  txt+='Date: '+(document.getElementById('obs_date').value||'N/A')+'\n';
+  txt+='Period: '+(document.getElementById('obs_period').value||'N/A')+'\n';
+  txt+='Subject: '+(document.getElementById('obs_subject').value||'N/A')+'\n';
+  txt+='Grade: '+(document.getElementById('obs_grade').value||'N/A')+'\n\n';
+  txt+='CHECKLIST:\n';
+  document.querySelectorAll('.obs-check').forEach(oc=>{
+    const cb=oc.querySelector('input[type="checkbox"]');
+    const label=oc.querySelector('strong').textContent;
+    const notes=oc.querySelector('textarea').value;
+    txt+=(cb.checked?'[x]':'[ ]')+' '+label+(notes?' — '+notes:'')+'\n';
+  });
+  txt+='\nEngagement Level: '+(document.getElementById('obs_engagement').value||'N/A')+'\n';
+  txt+='\nStrengths: '+(document.getElementById('obs_strengths').value||'N/A')+'\n';
+  txt+='Growth Areas: '+(document.getElementById('obs_growth').value||'N/A')+'\n';
+  txt+='Next Steps: '+(document.getElementById('obs_next').value||'N/A')+'\n';
+  txt+='Overall Rating: '+(document.getElementById('obs_rating').value||'N/A')+'\n';
+  txt+='\n---\nE² Teaching Framework';
+  navigator.clipboard.writeText(txt).then(()=>alert('Observation report copied!')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+txt+'</pre>');});
+}
+</script>
+</body>
+</html>
