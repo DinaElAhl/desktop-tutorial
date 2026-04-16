@@ -1,0 +1,34 @@
+{
+  "appId": "com.dinaelahl.e2teaching",
+  "appName": "E² Teaching",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#FAF0E6",
+  "ios": {
+    "contentInset": "always",
+    "scheme": "E2Teaching",
+    "backgroundColor": "#FAF0E6"
+  },
+  "android": {
+    "backgroundColor": "#FAF0E6",
+    "allowMixedContent": false,
+    "captureInput": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#C1694F",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  },
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https",
+    "cleartext": false
+  }
+}

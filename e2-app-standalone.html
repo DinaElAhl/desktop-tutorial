@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="E² Teaching Framework — Free lesson planner, presentation generator &amp; flipped video tool. Created by Dina El Ahl.">
+<title>E² Teaching Framework — Dina El Ahl</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{--t:#C1694F;--c:#B7553B;--r:#C9918F;--s:#FAF0E6;--g:#D4A843;--br:#3D2B1F;--cr:#FFF8F0;--p:#FFDAB9;--grn:#2d7a3a;--bl:#1a6a9a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--s);color:var(--br);min-height:100vh}
+.top-bar{background:linear-gradient(90deg,var(--bl),var(--grn));color:#fff;padding:.4rem 1rem;font-size:.75rem;display:flex;align-items:center;justify-content:center;gap:.8rem;flex-wrap:wrap;text-align:center}
+.top-bar a{color:#ffe;font-weight:700;word-break:break-all}
+.cu{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:.15rem .6rem;border-radius:10px;cursor:pointer;font-size:.72rem;font-family:'Inter',sans-serif}
+header{background:linear-gradient(135deg,var(--t),var(--c));color:#fff;text-align:center;padding:1.5rem 1rem .7rem}
+header h1{font-family:'Playfair Display',serif;font-size:2.3rem}
+.tl{margin-top:.2rem;font-size:.92rem;opacity:.9}
+.by{margin-top:.35rem;font-size:.75rem;opacity:.75}
+.by strong{color:#ffe}
+nav{background:#fff;border-bottom:2px solid var(--p);display:flex;flex-wrap:wrap;justify-content:center;gap:.25rem;padding:.45rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+nav button{background:none;border:none;padding:.38rem .85rem;border-radius:20px;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem;color:var(--br);font-weight:500;transition:all .2s}
+nav button:hover{background:var(--p)}
+nav button.active{background:var(--t);color:#fff}
+.tab{display:none;padding:1rem;max-width:980px;margin:0 auto}
+.tab.active{display:block}
+.card{background:#fff;border-radius:12px;padding:1.3rem;margin-bottom:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid rgba(193,105,79,.1)}
+.card h2{font-family:'Playfair Display',serif;color:var(--t);font-size:1.15rem;margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:1px solid var(--p)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
+.fg{margin-bottom:.8rem}
+.fg label{display:block;font-weight:600;font-size:.78rem;color:var(--c);margin-bottom:.22rem;text-transform:uppercase;letter-spacing:.05em}
+select,input[type=text],input[type=date],input[type=url],input[type=number],textarea{width:100%;border:1.5px solid #e0d0c0;border-radius:7px;padding:.5rem .8rem;font-family:'Inter',sans-serif;font-size:.86rem;color:var(--br);background:var(--cr);transition:border-color .2s}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--t);background:#fff}
+select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23B7553B' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:26px;cursor:pointer}
+textarea{min-height:55px;resize:vertical}
+.swbat-box{background:#fffaf4;border:1.5px solid #e0c8a0;border-radius:8px;padding:.6rem .9rem}
+.swbat-list{display:flex;flex-direction:column;gap:.35rem;margin-top:.4rem;max-height:220px;overflow-y:auto}
+.si{display:flex;align-items:flex-start;gap:.45rem;padding:.4rem .6rem;border-radius:6px;background:#fff;border:1px solid #ecdcc0;cursor:pointer;font-size:.82rem;line-height:1.4;transition:all .17s}
+.si:hover{border-color:var(--t);background:#fff5ee}
+.si.picked{border-color:var(--t);background:#fff0e0;font-weight:600}
+.si .ic{color:var(--t);font-size:.85rem;margin-top:.05rem;flex-shrink:0}
+.chips{display:flex;flex-wrap:wrap;gap:.28rem;margin-top:.28rem}
+.chip{display:inline-flex;align-items:center;background:var(--cr);border:1.5px solid #e0c8b0;border-radius:20px;padding:.2rem .6rem;cursor:pointer;font-size:.75rem;font-weight:500;transition:all .17s;user-select:none}
+.chip:hover{border-color:var(--t);background:#fff0e8}
+.chip.on{border-color:var(--t);background:var(--t);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem 1rem;border-radius:7px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.83rem;font-weight:600;transition:all .2s}
+.bp{background:var(--t);color:#fff}.bp:hover{background:var(--c)}
+.bs{background:#fff;color:var(--t);border:2px solid var(--t)}.bs:hover{background:var(--p)}
+.bg{background:var(--grn);color:#fff}.bg:hover{background:#1f5929}
+.bb{background:var(--bl);color:#fff}.bb:hover{background:#145280}
+.bgl{background:var(--g);color:#fff}.bgl:hover{background:#b8912e}
+.bbig{padding:.7rem 1.4rem;font-size:.93rem}
+.br{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.gen-bar{background:linear-gradient(135deg,var(--bl),var(--grn));border-radius:10px;padding:.9rem 1.2rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1.2rem}
+.gen-bar h3{color:#fff;font-family:'Playfair Display',serif;font-size:.95rem;flex:1}
+.lp-out{display:none;background:#fff;border-radius:12px;padding:1.4rem;box-shadow:0 4px 20px rgba(0,0,0,.1);border:2px solid var(--p);margin-top:1rem}
+.lp-out h2{font-family:'Playfair Display',serif;color:var(--t);font-size:1.35rem}
+.lp-meta{font-size:.8rem;color:#888;margin:.2rem 0 .9rem}
+.lp-sec{margin-bottom:.9rem}
+.lp-sec h3{color:var(--c);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--p);padding-bottom:.2rem;margin-bottom:.35rem}
+.lp-sec p{font-size:.86rem;line-height:1.6}
+.lp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.4rem}
+.lp-pc{background:var(--cr);border-radius:7px;padding:.55rem .75rem;border-left:3px solid var(--t)}
+.lp-pc h4{font-size:.76rem;font-weight:700;color:var(--c);margin-bottom:.15rem;text-transform:uppercase}
+.lp-pc p{font-size:.82rem;line-height:1.5}
+.slide-wrap{display:none;background:#1a1a2e;border-radius:12px;overflow:hidden;margin-top:1rem}
+.slide{display:none;min-height:420px;padding:2.8rem 3.5rem;flex-direction:column;justify-content:center;position:relative}
+.slide.active{display:flex}
+.slide-nav{background:#16213e;padding:.55rem 1rem;display:flex;align-items:center;gap:.7rem;justify-content:space-between}
+.slide-nav button{background:rgba(255,255,255,.15);border:none;color:#fff;padding:.3rem .75rem;border-radius:5px;cursor:pointer;font-size:.78rem;font-family:'Inter',sans-serif}
+.slide-nav button:hover{background:rgba(255,255,255,.27)}
+.sct{color:#aaa;font-size:.78rem}
+.belief-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:.8rem;margin-top:.7rem}
+.bc{background:#fff;border-left:4px solid var(--t);border-radius:7px;padding:.8rem;font-size:.83rem;line-height:1.5}
+.bc strong{color:var(--t)}
+.qlg{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-top:.7rem}
+.ql{background:#fff;border-radius:10px;padding:.9rem;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.ql:hover{border-color:var(--t);transform:translateY(-2px)}
+.ql .icon{font-size:1.7rem;margin-bottom:.3rem}
+.ql h3{color:var(--t);font-size:.85rem;font-family:'Playfair Display',serif}
+.ql p{font-size:.7rem;color:#888;margin-top:.1rem}
+.bp-wrap{overflow-x:auto}
+table.bpt{width:100%;border-collapse:collapse;font-size:.76rem;min-width:1100px}
+table.bpt th{background:var(--t);color:#fff;padding:.4rem .5rem;text-align:left;white-space:nowrap}
+table.bpt td{border:1px solid #e0d0c0;padding:.2rem .3rem;vertical-align:top}
+table.bpt tr:nth-child(even) td{background:#fdf6ee}
+table.bpt td select{font-size:.73rem;padding:.2rem .3rem;min-width:80px;background:var(--cr);border-radius:4px}
+.chk-sec{margin-bottom:1.1rem}
+.chk-sec h3{color:var(--t);font-family:'Playfair Display',serif;font-size:.9rem;margin-bottom:.4rem}
+.pb{background:#f0e0d0;border-radius:6px;height:8px;margin-bottom:.6rem;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--t),var(--g));border-radius:6px;transition:width .4s}
+.ci{display:flex;align-items:center;gap:.5rem;padding:.3rem 0;border-bottom:1px solid #f5ede4}
+.ci label{cursor:pointer;font-size:.83rem}
+.ci input{accent-color:var(--t);width:14px;height:14px;cursor:pointer}
+.pc{border-left:4px solid var(--t);padding:.8rem 1rem;background:var(--cr);border-radius:0 7px 7px 0;margin-bottom:.8rem}
+.pc h3{color:var(--t);font-family:'Playfair Display',serif;margin-bottom:.35rem}
+.pc ul{padding-left:1rem;font-size:.83rem;line-height:1.75}
+.pc ul li span{font-weight:700;color:var(--c)}
+.lms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:.9rem}
+.lmc{background:var(--cr);border:2px solid #e0d0c0;border-radius:9px;padding:.8rem;cursor:pointer;transition:all .2s}
+.lmc:hover,.lmc.sel{border-color:var(--t);background:#fff0e8}
+.lmc h4{color:var(--t);font-size:.85rem;font-weight:700;margin-bottom:.12rem}
+.lmc p{font-size:.7rem;color:#888}
+.lbg{display:inline-block;background:var(--t);color:#fff;font-size:.63rem;padding:.06rem .3rem;border-radius:3px;margin-left:.2rem}
+.imp-drop{border:2px dashed var(--r);border-radius:9px;padding:1.5rem;text-align:center;color:var(--r);font-size:.85rem;cursor:pointer;background:var(--cr)}
+.imp-drop:hover{border-color:var(--t);background:#fff0e8}
+.yt-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:9px;background:#000}
+.yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.fq-item{background:var(--cr);border:1px solid #d0e8f5;border-radius:7px;padding:.55rem;margin-bottom:.35rem;display:flex;gap:.45rem;align-items:flex-start}
+.fqt{background:var(--bl);color:#fff;border-radius:4px;padding:.1rem .4rem;font-size:.7rem;font-weight:700;white-space:nowrap}
+footer{background:var(--br);color:#c8a888;text-align:center;padding:.9rem;font-size:.78rem;margin-top:2rem}
+.fb{color:var(--g);font-weight:700;font-size:.9rem}
+@media(max-width:640px){.r2,.r3{grid-template-columns:1fr}.qlg{grid-template-columns:repeat(3,1fr)}.lms-grid{grid-template-columns:1fr 1fr}.lp-grid{grid-template-columns:1fr}}
+@media print{.top-bar,nav,.gen-bar,.br,.slide-wrap{display:none!important}.lp-out{display:block!important;box-shadow:none;border:none}}
+</style>
+</head><body>
+<div class="top-bar">
+  <span>🌍 Share with your school:</span>
+  <a href="https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html" target="_blank">https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html</a>
+  <button class="cu" onclick="cpURL()">📋 Copy</button>
+</div>
+<header>
+  <h1>E² Teaching Framework</h1>
+  <p class="tl">Every Student Has the Right to Understand</p>
+  <p class="by">Free for all teachers &amp; schools • Created by <strong>Dina El Ahl</strong> • Share freely 🌍</p>
+</header>
+<nav>
+  <button class="active" onclick="sTab('dashboard',this)">Dashboard</button>
+  <button onclick="sTab('planner',this)">📝 Lesson Planner</button>
+  <button onclick="sTab('blueprint',this)">📅 Blueprint</button>
+  <button onclick="sTab('flipvid',this)">🎥 Flipped Video</button>
+  <button onclick="sTab('framework',this)">🎓 Framework</button>
+  <button onclick="sTab('checklist',this)">✅ Checklist</button>
+  <button onclick="sTab('export',this)">📤 Export</button>
+</nav>
+
+<div id="tab-dashboard" class="tab active">
+<div class="card"><h2>Our Belief</h2>
+<div class="belief-grid">
+<div class="bc"><strong>1.</strong> Every student has the right to understand.</div>
+<div class="bc"><strong>2.</strong> It is <em>NEVER</em> the student’s problem — the teacher adapts first.</div>
+<div class="bc"><strong>3.</strong> Struggle is a signal, not a verdict.</div>
+<div class="bc"><strong>4.</strong> No student is unteachable.</div>
+<div class="bc"><strong>5.</strong> The teacher adapts materials and methods.</div>
+<div class="bc"><strong>6.</strong> Understanding is every student’s birthright.</div>
+</div></div>
+<div class="card"><h2>Welcome to Your Teaching Companion</h2>
+<p style="font-size:.86rem;margin-bottom:.7rem">Plan, present &amp; export — 100% free, no login. Share with your whole school!</p>
+<div style="background:#f0fff4;border:1.5px solid var(--grn);border-radius:8px;padding:.6rem 1rem;font-size:.8rem;color:#1f5929;margin-bottom:.9rem">
+🌍 <strong>Share link:</strong> <a href="https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html" style="color:var(--bl)">https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html</a>
+<button class="btn bg" style="margin-left:.5rem;padding:.2rem .65rem;font-size:.72rem" onclick="cpURL()">📋 Copy</button>
+</div>
+<div class="qlg">
+<div class="ql" onclick="nav2('planner')"><div class="icon">📝</div><h3>Lesson Planner</h3><p>Plan + generate</p></div>
+<div class="ql" onclick="nav2('blueprint')"><div class="icon">📅</div><h3>Blueprint</h3><p>Weekly plan</p></div>
+<div class="ql" onclick="nav2('flipvid')"><div class="icon">🎥</div><h3>Flipped Video</h3><p>YouTube → lesson</p></div>
+<div class="ql" onclick="nav2('framework')"><div class="icon">🎓</div><h3>Framework</h3><p>4 Pillars</p></div>
+<div class="ql" onclick="nav2('checklist')"><div class="icon">✅</div><h3>Checklist</h3><p>Track practice</p></div>
+</div></div>
+</div>
+
+<div id="tab-planner" class="tab">
+<div class="gen-bar"><h3>✨ Fill the form, then generate your Lesson Plan &amp; Presentation instantly</h3>
+<button class="btn bgl bbig" onclick="genLP()">📄 Generate Lesson Plan</button>
+<button class="btn bg bbig" onclick="genPres()">🎥 Generate Presentation</button>
+</div>
+<div class="card"><h2>📍 Step 1 — Lesson Info</h2>
+<div class="r3">
+<div class="fg"><label>Subject</label><select id="lp_subject" onchange="onFC('lp_subject')"><option value="">-- select --</option><option>Mathematics</option><option>English Language Arts</option><option>Science</option><option>Social Studies / History</option><option>Islamic Studies</option><option>Quran</option><option>Arabic Language</option><option>French</option><option>Spanish</option><option>Art & Design</option><option>Music</option><option>Physical Education</option><option>Computer Science / ICT</option><option>Geography</option><option>Other</option></select></div>
+<div class="fg"><label>Grade Level</label><select id="lp_grade" onchange="onFC('lp_grade')"><option value="">-- select --</option><option>Pre-K / KG1</option><option>KG2 / Foundation</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option><option>Mixed / Multi-grade</option></select></div>
+<div class="fg"><label>Duration</label><select id="lp_duration" onchange="onFC('lp_duration')"><option value="">-- select --</option><option>20 minutes</option><option>30 minutes</option><option>40 minutes</option><option>45 minutes</option><option>50 minutes</option><option>60 minutes</option><option>75 minutes</option><option>90 minutes</option><option>Double period</option><option>Full day</option></select></div>
+</div>
+<div class="r2">
+<div class="fg"><label>Topic / Unit</label><input type="text" id="lp_topic" placeholder="e.g. Fractions, Surah Al-Fatiha, The Water Cycle…" oninput="onFC('lp_topic')"></div>
+<div class="fg"><label>Date</label><input type="date" id="lp_date" onchange="saveLP()"></div>
+</div>
+<div class="fg"><label>Bloom’s Taxonomy Level</label><select id="lp_bloom" onchange="onFC('lp_bloom')"><option value="">-- select --</option><option>Knowledge — Remember & Recall</option><option>Comprehension — Understand & Explain</option><option>Application — Apply & Solve</option><option>Analysis — Compare & Examine</option><option>Evaluation — Judge & Justify</option><option>Creation — Design & Produce</option></select></div>
+<div class="fg"><label>Learning Objectives (SWBAT)</label>
+<div style="font-size:.72rem;color:var(--r);font-style:italic;margin-bottom:.28rem">Suggestions update based on your Subject &amp; Topic selection</div>
+<div class="swbat-box">
+<div style="font-size:.76rem;color:#888;margin-bottom:.3rem">💡 Click any suggestion to use it (auto-fills with your topic):</div>
+<div class="swbat-list" id="swbatList"></div>
+<textarea id="lp_objectives" rows="3" style="margin-top:.4rem;background:var(--cr);border:1.5px dashed #e0c8a0" placeholder="Click a suggestion above or write your own SWBAT statement…" oninput="saveLP()"></textarea>
+</div></div>
+</div>
+<div class="card"><h2>🎯 Step 2 — 5-Part Blueprint (Pillar 1)</h2>
+<div class="fg"><label>🎯 Hook — Grab attention (first 2 min)</label><div style="font-size:.72rem;color:var(--r);font-style:italic;margin-bottom:.22rem">Select a strategy:</div><select id="lp_hook" onchange="onFC('lp_hook')"><option value="">-- select --</option><option>Mystery question: "What do you think will happen if…?"</option><option>Surprising fact or statistic on the board</option><option>Short 60-second video — predict what it is about</option><option>Real-world photo: "What do you notice? What do you wonder?"</option><option>Quick poll before revealing the answer</option><option>Four corners: move to agree / disagree / unsure</option><option>Mystery box: reveal one clue at a time</option><option>Countdown: name 5 things you know about this topic</option><option>Story or anecdote connected to the lesson</option><option>Two truths and a lie about today’s topic</option></select></div>
+<div class="fg"><label>Hook notes / detail</label><textarea id="lp_hook_n" rows="2" oninput="saveLP()" placeholder="Add your specific hook details…"></textarea></div>
+<div class="fg"><label>📚 Teach — Deliver content (10-15 min)</label><div style="font-size:.72rem;color:var(--r);font-style:italic;margin-bottom:.22rem">How will you present new learning?</div><select id="lp_teach" onchange="onFC('lp_teach')"><option value="">-- select --</option><option>I Do / We Do / You Do — model step by step</option><option>Chunked mini-lecture (5 min) with pause-and-discuss</option><option>Think-aloud: narrate reasoning as you solve</option><option>Live concept map with student input</option><option>Flipped: students watched video, class = questions + practice</option><option>Jigsaw: expert groups teach each other</option><option>Socratic questioning — guide to discovery</option><option>Worked examples with colour-coded steps</option><option>Demonstration / experiment — students predict first</option><option>Anchor chart built together, stays on display</option></select></div>
+<div class="fg"><label>Teach notes / detail</label><textarea id="lp_teach_n" rows="2" oninput="saveLP()" placeholder="Details of your teaching approach…"></textarea></div>
+<div class="fg"><label>✏️ Practice — Students do (15-20 min)</label><div style="font-size:.72rem;color:var(--r);font-style:italic;margin-bottom:.22rem">What task will students complete?</div><select id="lp_practice" onchange="onFC('lp_practice')"><option value="">-- select --</option><option>Guided practice with scaffolded task</option><option>Independent task — tiered A/B/C difficulty</option><option>Think-Pair-Share</option><option>Station rotation (visual/hands-on/digital/written)</option><option>Collaborative group task with assigned roles</option><option>Digital practice: Kahoot / Nearpod / Blooket</option><option>Gallery walk — students post work, peers give feedback</option><option>Sorting / matching cards</option><option>Role-play or simulation</option><option>Real-world problem to solve</option></select></div>
+<div class="fg"><label>Practice notes / detail</label><textarea id="lp_practice_n" rows="2" oninput="saveLP()" placeholder="Details of the practice activity…"></textarea></div>
+<div class="fg"><label>🔗 Connect — Real-world link (5 min)</label><select id="lp_connect" onchange="onFC('lp_connect')"><option value="">-- select --</option><option>"Where have you seen this outside school?"</option><option>News headline using today’s concept</option><option>Cross-subject link: also used in Maths/Science/Arabic</option><option>Career spotlight: who uses this skill?</option><option>Environmental / global issue connection</option><option>Cultural or religious connection</option><option>Historical perspective: how was it different before?</option></select></div>
+<div class="fg"><label>💭 Reflect — Closing check (5 min)</label><select id="lp_reflect" onchange="onFC('lp_reflect')"><option value="">-- select --</option><option>Exit ticket: one learned + one question</option><option>3-2-1: learned, interesting, wondering</option><option>Traffic light self-rating</option><option>One-sentence summary in books</option><option>Mini whiteboard: answer closing question</option><option>Peer teach: explain to partner in 60 seconds</option><option>Thumbs up / sideways / down check</option></select></div>
+</div>
+<div class="card"><h2>🌈 Step 3 — Differentiation (Pillar 2)</h2>
+<div class="r2">
+<div class="fg"><label>Auditory Strategies</label><select id="lp_auditory" onchange="onFC('lp_auditory')"><option value="">-- select --</option><option>Think-pair-share discussions</option><option>Partner read-aloud and summarise</option><option>Teacher think-aloud narration</option><option>Song / chant for vocabulary</option><option>Podcast or audio clip as stimulus</option><option>Verbal quizzing with partner</option></select></div>
+<div class="fg"><label>Visual Strategies</label><select id="lp_visual" onchange="onFC('lp_visual')"><option value="">-- select --</option><option>Colour-coded notes and annotations</option><option>Mind map / spider diagram</option><option>Infographic on display throughout</option><option>Video clip (2-3 min) stimulus</option><option>Graphic organiser (T-chart, Venn)</option><option>Anchor chart on wall</option></select></div>
+</div>
+<div class="r2">
+<div class="fg"><label>Kinesthetic Strategies</label><select id="lp_kinesthetic" onchange="onFC('lp_kinesthetic')"><option value="">-- select --</option><option>Manipulatives on desks</option><option>Movement break — stretch and respond</option><option>Four corners movement activity</option><option>Role-play or freeze-frame drama</option><option>Gallery walk with sticky notes</option><option>Sorting cards physically</option></select></div>
+<div class="fg"><label>Support for Struggling Learners</label><select id="lp_struggling" onchange="onFC('lp_struggling')"><option value="">-- select --</option><option>Sentence starters and word banks</option><option>Numbered micro-steps</option><option>Peer buddy support partner</option><option>Reduced quantity of questions</option><option>Worked example to reference</option><option>Extra think time before responses</option></select></div>
+</div>
+<div class="r2">
+<div class="fg"><label>Extension for Advanced Learners</label><select id="lp_advanced" onchange="onFC('lp_advanced')"><option value="">-- select --</option><option>Independent research extension</option><option>Higher-order analysis/evaluation question</option><option>Create a teaching resource for peers</option><option>Open-ended real-world challenge</option><option>Write a persuasive/analytical piece</option><option>Design a quiz for the class</option></select></div>
+<div class="fg"><label>Cultural Connections</label><select id="lp_cultural" onchange="onFC('lp_cultural')"><option value="">-- select --</option><option>Diverse names in all examples</option><option>Reference Quranic verses or Islamic wisdom</option><option>Connect to students’ community</option><option>Multilingual vocabulary wall</option><option>Culturally representative texts</option></select></div>
+</div></div>
+<div class="card"><h2>⚡ Step 4 — Engagement 6 Levers (Pillar 3)</h2>
+<div class="r3">
+<div class="fg"><label>1. Curiosity</label><select id="lp_curiosity" onchange="onFC('lp_curiosity')"><option value="">-- select --</option><option>"What if…?" scenario — students predict</option><option>Show two conflicting facts — which is true?</option><option>Real unsolved problem related to topic</option><option>Spot the deliberate mistake challenge</option><option>Counterintuitive fact to spark debate</option></select></div>
+<div class="fg"><label>2. Participation</label><select id="lp_participation" onchange="onFC('lp_participation')"><option value="">-- select --</option><option>Think-Pair-Share every 8-10 min</option><option>Mini whiteboards simultaneously</option><option>Live Nearpod / Mentimeter poll</option><option>Random cold-call with equity sticks</option><option>Choral response for key facts</option></select></div>
+<div class="fg"><label>3. Purpose</label><select id="lp_purpose" onchange="onFC('lp_purpose')"><option value="">-- select --</option><option>State the "why": "You need this for…"</option><option>Connect to a unit goal students co-created</option><option>Real professional who uses this daily</option><option>Frame as a real mission or challenge</option></select></div>
+</div>
+<div class="r3">
+<div class="fg"><label>4. Feedback</label><select id="lp_feedback" onchange="onFC('lp_feedback')"><option value="">-- select --</option><option>Immediate verbal feedback while circulating</option><option>Written comment: "I notice… Next step…"</option><option>Two Stars and a Wish</option><option>Traffic light stamping</option><option>Digital auto-feedback via quiz tool</option></select></div>
+<div class="fg"><label>5. Gamification</label><select id="lp_gamification" onchange="onFC('lp_gamification')"><option value="">-- select --</option><option>Class points system — teams earn points</option><option>Kahoot / Blooket review game</option><option>Badge for skill mastery</option><option>Progress bar students colour in</option></select></div>
+<div class="fg"><label>6. Routine & Novelty</label><select id="lp_routine" onchange="onFC('lp_routine')"><option value="">-- select --</option><option>Consistent entry routine — agenda + do-now</option><option>Introduce one surprise element today</option><option>Change seating for group work</option><option>Start with practice then teach</option></select></div>
+</div></div>
+<div class="card"><h2>🏠 Step 5 — Classroom Culture (Pillar 4)</h2>
+<div class="r3">
+<div class="fg"><label>Relationship Moment</label><select id="lp_relationship" onchange="onFC('lp_relationship')"><option value="">-- select --</option><option>Greet every student by name at the door</option><option>2×10: 2 min personal chat with one student</option><option>Check-in: "One word for how you feel today"</option><option>Acknowledge effort publicly and specifically</option></select></div>
+<div class="fg"><label>Norms Reinforcement</label><select id="lp_norms" onchange="onFC('lp_norms')"><option value="">-- select --</option><option>Read one class norm aloud before starting</option><option>Acknowledge a student demonstrating a norm</option><option>Point to displayed norms visually</option></select></div>
+<div class="fg"><label>Restorative Approach</label><select id="lp_restorative" onchange="onFC('lp_restorative')"><option value="">-- select --</option><option>1-to-1 restorative conversation</option><option>Reflection prompt: "What happened? Who was affected?"</option><option>Repair agreement — student proposes solution</option><option>N/A — no incidents today</option></select></div>
+</div></div>
+<div class="card"><h2>📊 Step 6 — Assessment &amp; Materials</h2>
+<div class="r2">
+<div class="fg"><label>Formative Assessment</label><select id="lp_assessment" onchange="onFC('lp_assessment')"><option value="">-- select --</option><option>Exit ticket — written response</option><option>Observation — anecdotal notes while circulating</option><option>Whiteboard check — all show answers simultaneously</option><option>Digital quiz — Nearpod/Google Forms</option><option>Student self-assessment against criteria</option><option>Peer assessment with checklist</option></select></div>
+<div class="fg"><label>Success Criteria</label><select id="lp_success" onchange="onFC('lp_success')"><option value="">-- select --</option><option>All students define 3 key vocabulary terms</option><option>All students explain concept in own words</option><option>All students complete core task independently</option><option>80% of students achieve 75%+ on exit ticket</option><option>Students apply skill to new example</option></select></div>
+</div>
+<div class="fg"><label>Materials Needed (tap to select)</label><div class="chips" id="chips_lp_materials"><span class="chip" onclick="tChip(this,'lp_materials')">Whiteboard & markers</span><span class="chip" onclick="tChip(this,'lp_materials')">Printed worksheets</span><span class="chip" onclick="tChip(this,'lp_materials')">Laptops / tablets</span><span class="chip" onclick="tChip(this,'lp_materials')">Projector / smartboard</span><span class="chip" onclick="tChip(this,'lp_materials')">Manipulatives</span><span class="chip" onclick="tChip(this,'lp_materials')">Textbook</span><span class="chip" onclick="tChip(this,'lp_materials')">Flashcards</span><span class="chip" onclick="tChip(this,'lp_materials')">Art supplies</span><span class="chip" onclick="tChip(this,'lp_materials')">Mini whiteboards</span><span class="chip" onclick="tChip(this,'lp_materials')">Sticky notes</span><span class="chip" onclick="tChip(this,'lp_materials')">Timer</span></div><input type="hidden" id="lp_materials"></div>
+<div class="fg"><label>Technology Tools (tap to select)</label><div class="chips" id="chips_lp_tech"><span class="chip" onclick="tChip(this,'lp_tech')">Nearpod</span><span class="chip" onclick="tChip(this,'lp_tech')">Kahoot</span><span class="chip" onclick="tChip(this,'lp_tech')">Blooket</span><span class="chip" onclick="tChip(this,'lp_tech')">Quizlet</span><span class="chip" onclick="tChip(this,'lp_tech')">Google Classroom</span><span class="chip" onclick="tChip(this,'lp_tech')">Google Forms</span><span class="chip" onclick="tChip(this,'lp_tech')">Mentimeter</span><span class="chip" onclick="tChip(this,'lp_tech')">Canva</span><span class="chip" onclick="tChip(this,'lp_tech')">YouTube</span><span class="chip" onclick="tChip(this,'lp_tech')">Padlet</span><span class="chip" onclick="tChip(this,'lp_tech')">Flip (Flipgrid)</span><span class="chip" onclick="tChip(this,'lp_tech')">Moodle</span><span class="chip" onclick="tChip(this,'lp_tech')">Canvas LMS</span><span class="chip" onclick="tChip(this,'lp_tech')">Seesaw</span></div><input type="hidden" id="lp_tech"></div>
+<div class="fg"><label>Links &amp; Resources</label><textarea id="lp_links" rows="2" oninput="saveLP()" placeholder="Paste URLs or notes here…"></textarea></div>
+</div>
+<div class="gen-bar"><h3>✨ Ready? Generate below:</h3>
+<button class="btn bgl bbig" onclick="genLP()">📄 Generate Lesson Plan</button>
+<button class="btn bg bbig" onclick="genPres()">🎥 Generate Presentation</button>
+<button class="btn bs" onclick="newLP()">➕ New</button>
+<button class="btn bs" onclick="window.print()">🖨 Print</button>
+</div>
+<div id="lpOutput" class="lp-out"></div>
+<div id="presWrap" style="display:none;margin-top:1rem">
+<div class="card" style="background:#e8f4ff;border:2px solid var(--bl)">
+<h2 style="color:var(--bl)">🎥 Your Presentation is Ready!</h2>
+<div class="br">
+<button class="btn bb" onclick="openFS()">⛶ Fullscreen</button>
+<button class="btn bs" onclick="dlPres()">📥 Download HTML</button>
+</div></div>
+<div class="slide-wrap" id="slideWrap">
+<div class="slide-nav">
+<button onclick="prevS()">◄ Prev</button>
+<span class="sct" id="sct">1/1</span>
+<button onclick="nextS()">Next ►</button>
+</div>
+<div id="deck"></div>
+</div></div>
+</div>
+<div id="tab-blueprint" class="tab">
+<div class="card"><h2>Weekly Blueprint / LMS Planner</h2>
+<div class="r2">
+<div class="fg"><label>Subject</label><select id="bp_subj" onchange="bpSv()"><option value="">--</option><option>Mathematics</option><option>English Language Arts</option><option>Science</option><option>Social Studies / History</option><option>Islamic Studies</option><option>Quran</option><option>Arabic Language</option><option>French</option><option>Spanish</option><option>Art &amp; Design</option><option>Music</option><option>Physical Education</option><option>Computer Science / ICT</option><option>Geography</option><option>Other</option></select></div>
+<div class="fg"><label>Teacher</label><input type="text" id="bp_teacher" placeholder="Teacher name" oninput="bpSv()"></div>
+</div>
+<div class="bp-wrap"><table class="bpt"><thead><tr><th>Wk</th><th>Theme</th><th>L1 Objective</th><th>L2 Objective</th><th>Lesson Links</th><th>Nearpod</th><th>Flip</th><th>Classwork</th><th>Homework</th><th>Assessment</th><th>Revised</th><th>Guide</th><th>Comments</th></tr></thead><tbody id="bpBody"></tbody></table></div>
+<div class="br"><button class="btn bp" onclick="bpAdd()">➕ Add Week</button><button class="btn bs" onclick="bpRm()">➖ Remove</button><button class="btn bg" onclick="bpCSV()">📄 CSV</button></div>
+</div></div>
+
+<div id="tab-flipvid" class="tab">
+<div class="card" style="border:2px solid rgba(26,106,154,.25)">
+<h2 style="color:var(--bl)">🎥 Flipped Video Studio</h2>
+<p style="font-size:.8rem;color:#888;margin-bottom:.9rem">Turn any YouTube video into an interactive flipped lesson. Add pause-point questions, student prompts &amp; get LMS embed code.</p>
+<div class="r2">
+<div class="fg"><label>Lesson Title</label><input type="text" id="fv_t" placeholder="e.g. Grade 5 — The Water Cycle"></div>
+<div class="fg"><label>YouTube URL or Video ID</label>
+<div style="display:flex;gap:.5rem"><input type="url" id="fv_url" placeholder="https://www.youtube.com/watch?v=..."><button class="btn bb" onclick="ldVid()">▶ Load</button></div>
+</div></div>
+<div id="fv_noload" style="text-align:center;padding:2rem;color:#bbb">↑ Paste a YouTube URL and click Load.</div>
+<div id="fvPlayer" style="display:none">
+<div class="yt-wrap"><iframe id="ytF" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
+<div style="display:flex;flex-wrap:wrap;gap:.6rem;margin:.6rem 0;align-items:center;font-size:.79rem">
+<label style="font-weight:600;color:var(--bl)">Speed:</label>
+<select id="fv_sp" style="width:auto;min-width:70px" onchange=""><option value="0.5">0.5×</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+&nbsp;<label style="font-weight:600;color:var(--bl)">Start(s):</label><input type="number" id="fv_s" value="0" min="0" style="width:60px" oninput="updV()">
+&nbsp;<label style="font-weight:600;color:var(--bl)">End(s):</label><input type="number" id="fv_e" value="" min="0" style="width:60px" placeholder="end" oninput="updV()">
+</div>
+<div class="card" style="border:1.5px solid #d0e8f5">
+<h2 style="color:var(--bl);font-size:1rem">⏸ Pause-Point Questions</h2>
+<div style="display:grid;grid-template-columns:65px 1fr auto;gap:.4rem;align-items:end;margin-bottom:.4rem">
+<div class="fg" style="margin:0"><label>At (sec)</label><input type="number" id="fv_qt" min="0"></div>
+<div class="fg" style="margin:0"><label>Question</label>
+<select onchange="if(this.value)document.getElementById('fv_qx').value=this.value;this.value='';" style="margin-bottom:.3rem"><option value="">-- template --</option><option>What is happening right now in the video?</option><option>Predict: what happens next?</option><option>Summarise the last 2 minutes in one sentence.</option><option>Define the vocabulary word just explained.</option><option>How does this connect to last lesson?</option><option>What question do YOU have right now?</option><option>Rate your understanding: 1 (lost) – 5 (clear).</option><option>Give one real-life example of what was shown.</option></select>
+<input type="text" id="fv_qx" placeholder="Or type your own…">
+</div>
+<button class="btn bb" onclick="addFQ()" style="margin-bottom:.8rem">➕ Add</button>
+</div>
+<div id="fvQList"></div>
+</div>
+<div class="card" style="border:1.5px solid #d0e8f5">
+<h2 style="color:var(--bl);font-size:1rem">📝 Student Prompts</h2>
+<div class="r2">
+<div class="fg"><label>Before watching</label>
+<select onchange="qF(this,'fv_bef')" style="margin-bottom:.3rem"><option value="">-- suggestion --</option><option>What do you already know about this topic?</option><option>Write 2 questions you want answered.</option><option>Predict what the video will show.</option></select>
+<textarea id="fv_bef" rows="2" placeholder="Before-watch prompt…"></textarea></div>
+<div class="fg"><label>While watching</label>
+<select onchange="qF(this,'fv_dur')" style="margin-bottom:.3rem"><option value="">-- suggestion --</option><option>Write 5 key words you hear.</option><option>Sketch a diagram of each stage.</option><option>Note timestamps you don’t understand.</option></select>
+<textarea id="fv_dur" rows="2" placeholder="While-watching prompt…"></textarea></div>
+</div>
+<div class="r2">
+<div class="fg"><label>After watching</label>
+<select onchange="qF(this,'fv_aft')" style="margin-bottom:.3rem"><option value="">-- suggestion --</option><option>3-2-1: learned, interesting, question.</option><option>Write a 3-sentence summary.</option><option>Connect this to last lesson.</option></select>
+<textarea id="fv_aft" rows="2" placeholder="After-watch prompt…"></textarea></div>
+<div class="fg"><label>Key vocabulary</label><textarea id="fv_voc" rows="2" placeholder="e.g. evaporation, condensation…"></textarea></div>
+</div></div>
+<div style="background:#e8f4ff;border:1.5px solid #d0e8f5;border-radius:8px;padding:.7rem;margin-top:.6rem">
+<strong style="font-size:.82rem">🔗 LMS Embed Code:</strong>
+<code id="fv_emb" style="display:block;margin-top:.3rem;background:#fff;padding:.35rem .6rem;border-radius:5px;font-size:.72rem;word-break:break-all;color:var(--bl)">Load a video to generate embed code.</code>
+<div class="br" style="margin-top:.5rem">
+<button class="btn bs" onclick="cpEmb()">📋 Copy Embed</button>
+<button class="btn bb" onclick="dlFlip()">📦 Export Lesson HTML</button>
+</div></div>
+</div></div></div>
+
+<div id="tab-framework" class="tab">
+<div class="card"><h2>Pillar 1 — Lesson Design</h2><div class="pc"><ul><li><span>Hook (2 min):</span> Mystery, surprising fact, video, real-world problem</li><li><span>Teach (10-15 min):</span> Chunked content, visuals, think-aloud</li><li><span>Practice (15-20 min):</span> Guided then independent, partner work</li><li><span>Connect (5 min):</span> Real-world relevance, cross-curricular links</li><li><span>Reflect (5 min):</span> Exit tickets, journals, 3-2-1 summary</li></ul></div></div>
+<div class="card"><h2>Pillar 2 — Differentiated Instruction</h2><div class="pc"><ul><li><span>Auditory:</span> Discussions, read-alouds, songs, podcasts</li><li><span>Visual:</span> Diagrams, color-coding, videos, mind maps</li><li><span>Kinesthetic:</span> Hands-on, movement, manipulatives, role-play</li><li><span>Tiered Tasks:</span> Struggling / on-level / advanced versions</li><li><span>Cultural Sensitivity:</span> Diverse examples, honor home languages</li></ul></div></div>
+<div class="card"><h2>Pillar 3 — Engagement (6 Levers)</h2><div class="pc"><ul><li><span>1. Curiosity:</span> Mysteries, "What if…?" questions</li><li><span>2. Participation:</span> Think-pair-share, mini whiteboards, polls</li><li><span>3. Purpose:</span> Explain the "why", connect to student goals</li><li><span>4. Feedback:</span> Immediate, specific, growth-oriented</li><li><span>5. Gamification:</span> Points, badges, challenges</li><li><span>6. Routine &amp; Novelty:</span> Predictable structure + surprises</li></ul></div></div>
+<div class="card"><h2>Pillar 4 — Classroom Culture</h2><div class="pc"><ul><li><span>Relationships:</span> Learn names, 2×10 strategy, greet at door</li><li><span>Co-Created Norms:</span> Involve students, revisit regularly</li><li><span>Restorative Discipline:</span> Repair over punishment</li><li><span>Physical Environment:</span> Flexible seating, welcoming</li></ul></div></div>
+</div>
+
+<div id="tab-checklist" class="tab">
+<div class="card"><h2>Implementation Checklist</h2>
+<div style="margin-bottom:.9rem"><strong>Overall:</strong> <span id="pct-all">0%</span><div class="pb"><div class="pf" id="fill-all" style="width:0%"></div></div></div>
+<div class="chk-sec"><h3>Pillar 1 <span id="pct-p1" style="color:var(--r)">0%</span></h3><div class="pb"><div class="pf" id="fill-p1" style="width:0%"></div></div>
+<div class="ci"><input type="checkbox" id="c1" data-p="p1"><label for="c1">I start lessons with an engaging hook</label></div>
+<div class="ci"><input type="checkbox" id="c2" data-p="p1"><label for="c2">I chunk content into digestible parts</label></div>
+<div class="ci"><input type="checkbox" id="c3" data-p="p1"><label for="c3">I include guided AND independent practice</label></div>
+<div class="ci"><input type="checkbox" id="c4" data-p="p1"><label for="c4">I connect lessons to real life</label></div>
+<div class="ci"><input type="checkbox" id="c5" data-p="p1"><label for="c5">I end with reflection or exit tickets</label></div>
+<div class="ci"><input type="checkbox" id="c6" data-p="p1"><label for="c6">I scaffold complex tasks</label></div></div>
+<div class="chk-sec"><h3>Pillar 2 <span id="pct-p2" style="color:var(--r)">0%</span></h3><div class="pb"><div class="pf" id="fill-p2" style="width:0%"></div></div>
+<div class="ci"><input type="checkbox" id="c7" data-p="p2"><label for="c7">I address auditory learners</label></div>
+<div class="ci"><input type="checkbox" id="c8" data-p="p2"><label for="c8">I include visual supports</label></div>
+<div class="ci"><input type="checkbox" id="c9" data-p="p2"><label for="c9">I incorporate movement/hands-on</label></div>
+<div class="ci"><input type="checkbox" id="c10" data-p="p2"><label for="c10">I provide tiered support</label></div>
+<div class="ci"><input type="checkbox" id="c11" data-p="p2"><label for="c11">I challenge advanced learners</label></div>
+<div class="ci"><input type="checkbox" id="c12" data-p="p2"><label for="c12">I honor cultural diversity</label></div>
+<div class="ci"><input type="checkbox" id="c13" data-p="p2"><label for="c13">I offer student choice</label></div></div>
+<div class="chk-sec"><h3>Pillar 3 <span id="pct-p3" style="color:var(--r)">0%</span></h3><div class="pb"><div class="pf" id="fill-p3" style="width:0%"></div></div>
+<div class="ci"><input type="checkbox" id="c14" data-p="p3"><label for="c14">I spark curiosity</label></div>
+<div class="ci"><input type="checkbox" id="c15" data-p="p3"><label for="c15">ALL students participate actively</label></div>
+<div class="ci"><input type="checkbox" id="c16" data-p="p3"><label for="c16">I explain WHY this matters</label></div>
+<div class="ci"><input type="checkbox" id="c17" data-p="p3"><label for="c17">I give immediate, specific feedback</label></div>
+<div class="ci"><input type="checkbox" id="c18" data-p="p3"><label for="c18">I use gamification</label></div>
+<div class="ci"><input type="checkbox" id="c19" data-p="p3"><label for="c19">I balance routine with novelty</label></div></div>
+<div class="chk-sec"><h3>Pillar 4 <span id="pct-p4" style="color:var(--r)">0%</span></h3><div class="pb"><div class="pf" id="fill-p4" style="width:0%"></div></div>
+<div class="ci"><input type="checkbox" id="c20" data-p="p4"><label for="c20">I connect personally with students</label></div>
+<div class="ci"><input type="checkbox" id="c21" data-p="p4"><label for="c21">I co-create and reinforce norms</label></div>
+<div class="ci"><input type="checkbox" id="c22" data-p="p4"><label for="c22">I use restorative practices</label></div>
+<div class="ci"><input type="checkbox" id="c23" data-p="p4"><label for="c23">My environment is welcoming</label></div></div>
+<div class="br"><button class="btn bs" onclick="rstCL()">🔄 Reset All</button></div>
+</div></div>
+
+<div id="tab-export" class="tab">
+<div class="card"><h2>📤 Export to LMS</h2>
+<div class="lms-grid">
+<div class="lmc sel" onclick="sFmt(this,'scorm12')"><h4>SCORM 1.2 <span class="lbg">Most Compatible</span></h4><p>Moodle, Blackboard, D2L, Sakai</p></div>
+<div class="lmc" onclick="sFmt(this,'scorm2004')"><h4>SCORM 2004</h4><p>Canvas, Blackboard Ultra</p></div>
+<div class="lmc" onclick="sFmt(this,'xapi')"><h4>xAPI / Tin Can <span class="lbg">Modern</span></h4><p>LRS, SCORM Cloud</p></div>
+<div class="lmc" onclick="sFmt(this,'imscc')"><h4>IMS Common Cartridge</h4><p>Canvas, Moodle, Schoology</p></div>
+<div class="lmc" onclick="sFmt(this,'qti')"><h4>QTI 2.1 (Assessment)</h4><p>Canvas, Moodle, TAO</p></div>
+<div class="lmc" onclick="sFmt(this,'json')"><h4>JSON Backup</h4><p>Universal — re-import here</p></div>
+</div>
+<div id="exp-desc" style="background:var(--cr);border-radius:7px;padding:.6rem .9rem;font-size:.8rem;color:#666;margin-bottom:.8rem"><strong>SCORM 1.2</strong> — .zip file. Upload to any LMS.</div>
+<div class="br">
+<button class="btn bp" onclick="doExp()">📦 Export Package</button>
+<button class="btn bs" onclick="cpLPTxt()">📋 Copy Text</button>
+<button class="btn bs" onclick="bpCSV()">📄 Blueprint CSV</button>
+<button class="btn bs" onclick="window.print()">🖨 Print</button>
+</div></div>
+<div class="card"><h2>📥 Import / Restore</h2>
+<div class="imp-drop" onclick="document.getElementById('iF').click()" ondragover="event.preventDefault()" ondrop="hDrop(event)">📂 Click or drag &amp; drop JSON backup</div>
+<input type="file" id="iF" accept=".json,.txt" style="display:none" onchange="hIF(event)">
+<div class="fg" style="margin-top:.8rem"><label>Or paste JSON</label><textarea id="iPaste" rows="3" placeholder="Paste JSON…"></textarea></div>
+<div class="br"><button class="btn bg" onclick="doImp()">✅ Import &amp; Restore</button></div>
+<div id="iMsg" style="margin-top:.4rem;font-size:.82rem;color:var(--t);display:none"></div>
+</div></div>
+
+<footer>
+<div class="fb">E² Teaching Framework</div>
+<div style="margin-top:.25rem;font-size:.74rem;opacity:.85">Created by <strong>Dina El Ahl</strong> — Free for all teachers &amp; schools worldwide 🌍</div>
+<div style="margin-top:.25rem;font-size:.72rem"><a style="color:#ffd" href="https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html">https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html</a></div>
+</footer><script>
+// ===== CORE NAV =====
+var _SWBAT={Mathematics:['SWBAT solve {t} problems achieving at least 80% accuracy.','SWBAT explain the steps for {t} using correct mathematical vocabulary.','SWBAT apply {t} to at least 3 real-world situations.','SWBAT identify patterns in {t} and describe the rule.','SWBAT calculate {t} independently and verify answers.'],'English Language Arts':['SWBAT read and summarise a {t} passage in 3-5 sentences.','SWBAT identify the main idea and supporting details in a {t} text.','SWBAT write a structured paragraph about {t} with a topic sentence and conclusion.','SWBAT use correct grammar and punctuation when writing about {t}.','SWBAT analyse characters or themes in {t} using textual evidence.'],Science:['SWBAT explain the process of {t} in their own words.','SWBAT predict, observe, and record results for an experiment on {t}.','SWBAT label and describe the key parts of a {t} diagram.','SWBAT identify cause and effect relationships in {t}.','SWBAT connect {t} to a real-world example in their environment.'],Quran:['SWBAT recite {t} with correct tajweed rules.','SWBAT explain the meaning and tafsir of {t} in their own words.','SWBAT memorise {t} and recite from memory fluently.','SWBAT identify the key lessons and values from {t}.','SWBAT connect the message of {t} to their daily life.'],'Islamic Studies':['SWBAT describe the importance of {t} in Islamic practice.','SWBAT explain the correct way to observe {t}.','SWBAT connect {t} to daily Islamic life with examples.','SWBAT reflect on how {t} strengthens their faith.','SWBAT cite relevant hadith or ayat related to {t}.'],'Arabic Language':['SWBAT read and understand a short Arabic passage about {t}.','SWBAT use new Arabic vocabulary from {t} correctly in sentences.','SWBAT write 5 sentences about {t} using correct Arabic grammar.','SWBAT identify key grammatical structures in {t} texts.','SWBAT conduct a short conversation related to {t}.'],'Social Studies / History':['SWBAT describe the key events and people involved in {t}.','SWBAT explain the causes and effects of {t} using evidence.','SWBAT compare life before and after {t} on a T-chart.','SWBAT evaluate different perspectives on {t}.','SWBAT connect events in {t} to present-day society.'],default:['SWBAT define and explain key vocabulary related to {t}.','SWBAT demonstrate understanding of {t} independently.','SWBAT apply knowledge of {t} to solve a new problem.','SWBAT evaluate their own learning using success criteria for {t}.','SWBAT create a product showing understanding of {t}.']};
+
+function sTab(id,btn){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');if(btn)btn.classList.add('active');window.scrollTo(0,0);}
+function nav2(id){var m={planner:1,blueprint:2,flipvid:3,framework:4,checklist:5,export:6,dashboard:0};var btns=document.querySelectorAll('nav button');if(btns[m[id]])sTab(id,btns[m[id]]);}
+
+function onFC(id){saveLP();if(id==='lp_subject'||id==='lp_topic'||id==='lp_grade')updSWBAT();}
+function updSWBAT(){var subj=document.getElementById('lp_subject').value;var topic=document.getElementById('lp_topic').value||'[topic]';var list=_SWBAT[subj]||_SWBAT.default;var el=document.getElementById('swbatList');if(!el)return;el.innerHTML=list.map(function(s,i){var txt=s.replace(/\{t\}/g,topic);return '<div class="si" id="si'+i+'" onclick="pickS(this)"><span class="ic">▶</span><span>'+txt+'</span></div>';}).join('');}
+function pickS(el){document.querySelectorAll('.si').forEach(function(x){x.classList.remove('picked');});el.classList.add('picked');document.getElementById('lp_objectives').value=el.querySelector('span:last-child').textContent;saveLP();}
+
+function tChip(c,hid){c.classList.toggle('on');syncC(hid);}
+function syncC(hid){var container=document.getElementById('chips_'+hid);if(!container)return;var vals=[];container.querySelectorAll('.chip.on').forEach(function(x){vals.push(x.textContent);});var h=document.getElementById(hid);if(h)h.value=vals.join(', ');saveLP();}
+
+var LP_IDS=['lp_subject','lp_grade','lp_topic','lp_duration','lp_date','lp_bloom','lp_objectives','lp_hook','lp_hook_n','lp_teach','lp_teach_n','lp_practice','lp_practice_n','lp_connect','lp_reflect','lp_auditory','lp_visual','lp_kinesthetic','lp_struggling','lp_advanced','lp_cultural','lp_curiosity','lp_participation','lp_purpose','lp_feedback','lp_gamification','lp_routine','lp_relationship','lp_norms','lp_restorative','lp_assessment','lp_success','lp_materials','lp_tech','lp_links'];
+
+function saveLP(){var d={};LP_IDS.forEach(function(id){var el=document.getElementById(id);if(el)d[id]=el.value;});['lp_materials','lp_tech'].forEach(function(hid){var c=document.getElementById('chips_'+hid);if(c){var st={};c.querySelectorAll('.chip').forEach(function(x){st[x.textContent]=x.classList.contains('on');});d['_c_'+hid]=st;}});try{localStorage.setItem('e2lp',JSON.stringify(d));}catch(e){}}
+function loadLP(){var s;try{s=localStorage.getItem('e2lp');}catch(e){}if(!s)return;try{var d=JSON.parse(s);LP_IDS.forEach(function(id){var el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id];});['lp_materials','lp_tech'].forEach(function(hid){if(d['_c_'+hid]){var c=document.getElementById('chips_'+hid);if(c){var st=d['_c_'+hid];c.querySelectorAll('.chip').forEach(function(x){if(st[x.textContent])x.classList.add('on');else x.classList.remove('on');});}}});updSWBAT();}catch(e){}}
+function newLP(){if(!confirm('Clear lesson plan?'))return;LP_IDS.forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});document.querySelectorAll('#tab-planner .chip').forEach(function(c){c.classList.remove('on');});saveLP();}
+function getLP(){var d={};LP_IDS.forEach(function(id){var el=document.getElementById(id);if(el)d[id]=el.value;});return d;}
+document.addEventListener('change',function(e){if(e.target.closest&&e.target.closest('#tab-planner'))saveLP();});
+document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#tab-planner'))saveLP();});
+
+// ===== GENERATE LESSON PLAN =====
+function genLP(){
+  var d=getLP();
+  if(!d.lp_subject&&!d.lp_topic){alert('Please fill in Subject and Topic first.');return;}
+  var title=d.lp_topic||'Lesson Plan';
+  var meta=[d.lp_subject,d.lp_grade,d.lp_duration,d.lp_date].filter(Boolean).join(' • ');
+  function row(label,val,sub){return val?'<div class="lp-sec"><h3>'+label+'</h3><p>'+val+(sub?'<br><em style=\"font-size:.8rem;color:#888\">'+sub+'</em>':'')+'</p></div>':'';}
+  var html='<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.9rem"><div><h2>'+title+'</h2><div class="lp-meta">'+meta+'</div>'+(d.lp_bloom?'<span style="font-size:.78rem;background:#fff0e8;padding:.12rem .45rem;border-radius:4px;border:1px solid var(--p);color:var(--c)">'+d.lp_bloom+'</span>':'')+'</div><div style="font-size:.72rem;color:#aaa;text-align:right">E² Teaching Framework<br>Dina El Ahl</div></div>'+
+  row('Learning Objectives',d.lp_objectives)+
+  '<div class="lp-sec"><h3>5-Part Blueprint</h3><div class="lp-grid">'+
+  (d.lp_hook?'<div class="lp-pc"><h4>🎯 Hook</h4><p>'+d.lp_hook+(d.lp_hook_n?'<br><em>'+d.lp_hook_n+'</em>':'')+'</p></div>':'')+
+  (d.lp_teach?'<div class="lp-pc"><h4>📚 Teach</h4><p>'+d.lp_teach+(d.lp_teach_n?'<br><em>'+d.lp_teach_n+'</em>':'')+'</p></div>':'')+
+  (d.lp_practice?'<div class="lp-pc"><h4>✏️ Practice</h4><p>'+d.lp_practice+(d.lp_practice_n?'<br><em>'+d.lp_practice_n+'</em>':'')+'</p></div>':'')+
+  (d.lp_connect?'<div class="lp-pc"><h4>🔗 Connect</h4><p>'+d.lp_connect+'</p></div>':'')+
+  (d.lp_reflect?'<div class="lp-pc"><h4>💭 Reflect</h4><p>'+d.lp_reflect+'</p></div>':'')+
+  '</div></div>'+
+  '<div class="lp-sec"><h3>Differentiation</h3><div class="lp-grid">'+
+  (d.lp_auditory?'<div class="lp-pc"><h4>Auditory</h4><p>'+d.lp_auditory+'</p></div>':'')+
+  (d.lp_visual?'<div class="lp-pc"><h4>Visual</h4><p>'+d.lp_visual+'</p></div>':'')+
+  (d.lp_struggling?'<div class="lp-pc"><h4>Struggling Support</h4><p>'+d.lp_struggling+'</p></div>':'')+
+  (d.lp_advanced?'<div class="lp-pc"><h4>Advanced Extension</h4><p>'+d.lp_advanced+'</p></div>':'')+
+  '</div></div>'+
+  '<div class="lp-sec"><h3>Engagement & Culture</h3><div class="lp-grid">'+
+  (d.lp_curiosity?'<div class="lp-pc"><h4>Curiosity</h4><p>'+d.lp_curiosity+'</p></div>':'')+
+  (d.lp_participation?'<div class="lp-pc"><h4>Participation</h4><p>'+d.lp_participation+'</p></div>':'')+
+  (d.lp_purpose?'<div class="lp-pc"><h4>Purpose</h4><p>'+d.lp_purpose+'</p></div>':'')+
+  (d.lp_feedback?'<div class="lp-pc"><h4>Feedback</h4><p>'+d.lp_feedback+'</p></div>':'')+
+  '</div></div>'+
+  row('Assessment',d.lp_assessment)+row('Success Criteria',d.lp_success)+
+  (d.lp_materials||d.lp_tech?'<div class="lp-sec"><h3>Materials & Technology</h3><p>'+[d.lp_materials,d.lp_tech].filter(Boolean).join(' | ')+'</p></div>':'')+
+  (d.lp_links?'<div class="lp-sec"><h3>Links & Resources</h3><p>'+d.lp_links+'</p></div>':'')+
+  '<div class="br" style="margin-top:.9rem"><button class="btn bs" onclick="window.print()">🖨 Print</button><button class="btn bg" onclick="dlLP()">📥 Download HTML</button></div>';
+  var el=document.getElementById('lpOutput');el.innerHTML=html;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function dlLP(){
+  var d=getLP();var title=d.lp_topic||'Lesson Plan';
+  var c=document.getElementById('lpOutput').innerHTML;
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+title+'</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;color:#3D2B1F}h2{color:#C1694F}h3{color:#B7553B;font-size:.83rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #FFDAB9;padding-bottom:.2rem;margin:.8rem 0 .3rem}.lp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.4rem}.lp-pc{background:#FFF8F0;border-radius:6px;padding:.5rem .7rem;border-left:3px solid #C1694F}.lp-pc h4{font-size:.75rem;color:#B7553B;margin-bottom:.15rem;text-transform:uppercase}.lp-pc p,.lp-sec p{font-size:.84rem;line-height:1.55}.br{display:none}</style></head><body>'+c+'</body></html>';
+  var b=new Blob([html],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lesson_'+title.replace(/[^a-z0-9]/gi,'_')+'.html';a.click();
+}
+
+// ===== GENERATE PRESENTATION =====
+var _slides=[],_cur=0;
+var TH={bg:'linear-gradient(135deg,#c1694f,#b7553b)',h:'#fff',a:'#ffd700',tx:'#fff5ee'};
+
+function genPres(){
+  var d=getLP();
+  if(!d.lp_subject&&!d.lp_topic){alert('Fill Subject and Topic first.');return;}
+  var T=TH;var topic=d.lp_topic||'Lesson';
+  function sl(icon,title,body,extra){return '<div class="slide" style="background:'+T.bg+';min-height:420px;padding:2.5rem 3rem;flex-direction:column;justify-content:center"><div style="font-size:2.2rem;margin-bottom:.4rem">'+icon+'</div><h2 style="color:'+T.h+';font-family:'Playfair Display',serif;font-size:1.55rem;margin-bottom:.7rem">'+title+'</h2><div style="color:'+T.tx+';font-size:.95rem;line-height:1.7;max-width:680px">'+body+'</div>'+(extra||'')+'<div style="position:absolute;bottom:1rem;right:1.5rem;font-size:.68rem;color:rgba(255,255,255,.3)">E² — Dina El Ahl</div></div>';}
+  _slides=[];
+  _slides.push(sl('📚',topic,'<div style="font-size:1.1rem;opacity:.8">'+[d.lp_subject,d.lp_grade,d.lp_duration,d.lp_date].filter(Boolean).join(' • ')+'</div>'+(d.lp_bloom?'<div style="margin-top:.5rem;font-size:.82rem;opacity:.6;font-style:italic">'+d.lp_bloom+'</div>':''),''));
+  if(d.lp_objectives)_slides.push(sl('🎯','Learning Objectives','<div style="background:rgba(255,255,255,.12);border-radius:8px;padding:.9rem 1.1rem;font-size:.95rem;font-weight:500;line-height:1.7">'+d.lp_objectives+'</div>'));
+  if(d.lp_hook)_slides.push(sl('❓','Hook — Grab Attention','<b>Strategy:</b> '+d.lp_hook+(d.lp_hook_n?'<br><br><em>'+d.lp_hook_n+'</em>':'')));
+  if(d.lp_teach)_slides.push(sl('💬','Teach — New Learning','<b>Method:</b> '+d.lp_teach+(d.lp_teach_n?'<br><br>'+d.lp_teach_n:'')));
+  if(d.lp_practice)_slides.push(sl('✏️','Practice — Your Turn!','<b>Activity:</b> '+d.lp_practice+(d.lp_practice_n?'<br><br>'+d.lp_practice_n:'')));
+  var diff=[d.lp_auditory&&('<b>Auditory:</b> '+d.lp_auditory),d.lp_visual&&('<b>Visual:</b> '+d.lp_visual),d.lp_struggling&&('<b>Support:</b> '+d.lp_struggling),d.lp_advanced&&('<b>Extension:</b> '+d.lp_advanced)].filter(Boolean).join('<br>');
+  if(diff)_slides.push(sl('🌈','Differentiation','<div style="font-size:.9rem;line-height:1.8">'+diff+'</div>'));
+  if(d.lp_connect)_slides.push(sl('🔗','Connect — Real World',d.lp_connect));
+  if(d.lp_reflect||d.lp_assessment)_slides.push(sl('📝','Check Understanding','<b>Reflection:</b> '+(d.lp_reflect||'')+(d.lp_assessment?'<br><b>Assessment:</b> '+d.lp_assessment:'')+(d.lp_success?'<br><b>Success:</b> '+d.lp_success:'')));
+  _slides.push(sl('🌟','Great work, '+( d.lp_grade||'class')+'!','<div style="font-size:1.15rem;opacity:.85">Every student has the right to understand — E² Teaching Framework</div>'));
+  _cur=0;
+  var deck=document.getElementById('deck');
+  deck.innerHTML=_slides.map(function(s,i){return i===0?s.replace('class="slide"','class="slide active"'):s;}).join('');
+  document.getElementById('sct').textContent='1 / '+_slides.length;
+  document.getElementById('slideWrap').style.display='block';
+  document.getElementById('presWrap').style.display='block';
+  document.getElementById('presWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function prevS(){if(_cur>0){_cur--;shS();}}
+function nextS(){if(_cur<_slides.length-1){_cur++;shS();}}
+function shS(){var ss=document.querySelectorAll('#deck .slide');ss.forEach(function(s,i){s.classList.toggle('active',i===_cur);});document.getElementById('sct').textContent=(_cur+1)+' / '+_slides.length;}
+
+function openFS(){
+  var d=getLP();var topic=d.lp_topic||'Lesson';
+  var deckHtml=_slides.join('');
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+topic+'</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#111;font-family:Inter,sans-serif}#d{width:100vw;height:100vh}.slide{display:none;width:100%;height:100%;padding:4rem 6rem;flex-direction:column;justify-content:center;position:relative}.slide.active{display:flex}.slide h2{font-family:"Playfair Display",serif;font-size:2.2rem;margin-bottom:.9rem}nav{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:.8rem;z-index:10}nav button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.4rem 1.1rem;border-radius:5px;cursor:pointer;font-family:Inter,sans-serif;font-size:.88rem}nav button:hover{background:rgba(255,255,255,.35)}.ct{background:rgba(0,0,0,.4);color:#aaa;padding:.3rem .8rem;border-radius:4px;font-size:.82rem}</style></head><body><div id="d">'+deckHtml+'</div><nav><button onclick="pc()">&#9664;</button><span class="ct" id="ct">1/'+_slides.length+'</span><button onclick="nc()">&#9654;</button></nav><script>var c=0,n='+_slides.length+';function pc(){if(c>0){c--;go();}}function nc(){if(c<n-1){c++;go();}}function go(){document.querySelectorAll(".slide").forEach(function(s,i){s.classList.toggle("active",i===c);});document.getElementById("ct").textContent=(c+1)+"/"+n;}document.addEventListener("keydown",function(e){if(e.key==="ArrowRight"||e.key===" ")nc();else if(e.key==="ArrowLeft")pc();});</script></body></html>';
+  var w=window.open('','_blank');w.document.write(html);w.document.close();
+}
+
+function dlPres(){
+  var d=getLP();var topic=d.lp_topic||'Lesson';
+  var deckHtml=_slides.join('');
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+topic+' Presentation</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#111;font-family:Inter,sans-serif}#d{width:100vw;height:100vh}.slide{display:none;width:100%;height:100%;padding:4rem 6rem;flex-direction:column;justify-content:center;position:relative}.slide.active{display:flex}.slide h2{font-family:"Playfair Display",serif;font-size:2.2rem;margin-bottom:.9rem}nav{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:.8rem;z-index:10}nav button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.4rem 1.1rem;border-radius:5px;cursor:pointer;font-family:Inter,sans-serif;font-size:.88rem}.ct{background:rgba(0,0,0,.4);color:#aaa;padding:.3rem .8rem;border-radius:4px;font-size:.82rem}</style></head><body><div id="d">'+deckHtml+'</div><nav><button onclick="pc()">&#9664;</button><span class="ct" id="ct">1/'+_slides.length+'</span><button onclick="nc()">&#9654;</button></nav><script>var c=0,n='+_slides.length+';function pc(){if(c>0){c--;go();}}function nc(){if(c<n-1){c++;go();}}function go(){document.querySelectorAll(".slide").forEach(function(s,i){s.classList.toggle("active",i===c);});document.getElementById("ct").textContent=(c+1)+"/"+n;}document.addEventListener("keydown",function(e){if(e.key==="ArrowRight"||e.key===" ")nc();else if(e.key==="ArrowLeft")pc();});</script></body></html>';
+  var b=new Blob([html],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='presentation_'+topic.replace(/[^a-z0-9]/gi,'_')+'.html';a.click();
+}
+</script><script>
+// ===== BLUEPRINT =====
+var BC=[{c:'theme',o:['Introduction / Launch','Review & Reinforcement','New Concept','Application & Practice','Assessment Week','Project & Inquiry','Revision / Test Prep','Consolidation','Extension / Enrichment']},{c:'obj1',o:['Recall key vocabulary','Understand main concept','Apply to new problems','Analyse and compare','Evaluate and justify','Create original work','Complete guided practice']},{c:'obj2',o:['Recall key vocabulary','Understand main concept','Apply to new problems','Analyse and compare','Evaluate and justify','Create original work','Complete guided practice']},{c:'links',o:['Yes ✔','No ✖','Partial','N/A']},{c:'nearpod',o:['Yes ✔','No ✖','Partial','N/A']},{c:'flip',o:['Yes ✔','No ✖','Partial','N/A']},{c:'cw',o:['Worksheet','Textbook exercises','Group discussion','Lab / experiment','Digital task','Project work','Note-taking','Creative task','Problem-solving','N/A']},{c:'hw',o:['Reading + questions','Practice problems','Research task','Creative project','Study for quiz','Revision notes','Watch flipped video','N/A']},{c:'assess',o:['Exit ticket','Quiz / test','Project submission','Presentation','Peer assessment','Observation','N/A']},{c:'revised',o:['HW revised','Quiz re-taken','CW as HW','Extension given','N/A']},{c:'guide',o:['Textbook (notes)','Teacher-made','Video link (notes)','Digital LMS resource','N/A']},{c:'comments',o:['On track ✔','Needs support','Excellent progress 🌟','Behind schedule','Completed ahead','Lesson postponed','Revisit next lesson']}];
+var _bpW=[];
+function bpEm(){var w={};BC.forEach(function(m){w[m.c]='';});return w;}
+function mkS(opts,val){var s=document.createElement('select');s.innerHTML='<option value="">--</option>'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('');return s;}
+function bpRn(){var tb=document.getElementById('bpBody');if(!tb)return;tb.innerHTML='';_bpW.forEach(function(w,i){var tr=document.createElement('tr');var td0=document.createElement('td');td0.innerHTML='<div style="font-weight:700;color:#C1694F;text-align:center;font-size:.9rem">'+(i+1)+'</div>';tr.appendChild(td0);BC.forEach(function(col){var td=document.createElement('td');var sel=mkS(col.o,w[col.c]);(function(idx,c){sel.addEventListener('change',function(){_bpW[idx][c]=sel.value;bpSv();});})(i,col.c);td.appendChild(sel);tr.appendChild(td);});tb.appendChild(tr);});}
+function bpSv(){try{localStorage.setItem('e2bp',JSON.stringify({w:_bpW,s:document.getElementById('bp_subj')?document.getElementById('bp_subj').value:'',t:document.getElementById('bp_teacher')?document.getElementById('bp_teacher').value:''}));}catch(e){}}
+function bpLd(){var s;try{s=localStorage.getItem('e2bp');}catch(e){}if(s){try{var d=JSON.parse(s);_bpW=d.w||[];if(d.s&&document.getElementById('bp_subj'))document.getElementById('bp_subj').value=d.s;if(d.t&&document.getElementById('bp_teacher'))document.getElementById('bp_teacher').value=d.t;}catch(e){}}if(_bpW.length===0){for(var i=0;i<8;i++)_bpW.push(bpEm());}bpRn();}
+function bpAdd(){_bpW.push(bpEm());bpRn();bpSv();}
+function bpRm(){if(_bpW.length>1&&confirm('Remove last week?')){_bpW.pop();bpRn();bpSv();}}
+function bpCSV(){var csv='﻿Wk,Theme,L1 Obj,L2 Obj,Links,Nearpod,Flip,CW,HW,Assess,Revised,Guide,Comments
+';_bpW.forEach(function(w,i){csv+=(i+1)+','+BC.map(function(m){return '"'+(w[m.c]||'').replace(/"/g,'""')+'"';}).join(',')+'\n';});var b=new Blob([csv],{type:'text/csv;charset=utf-8;'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='e2_blueprint.csv';a.click();}
+
+// ===== FLIP VIDEO =====
+var _vid='',_fqs=[];
+function getVID(u){u=u.trim();var m=u.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_\-]{11})/);if(m)return m[1];if(/^[A-Za-z0-9_\-]{11}$/.test(u))return u;return null;}
+function ldVid(){var id=getVID(document.getElementById('fv_url').value);if(!id){alert('Could not find YouTube video ID. Please paste the full YouTube URL.');return;}_vid=id;updV();document.getElementById('fvPlayer').style.display='block';document.getElementById('fv_noload').style.display='none';updEmb();}
+function updV(){if(!_vid)return;var s=parseInt(document.getElementById('fv_s').value)||0;var e=document.getElementById('fv_e').value;var p='autoplay=0&rel=0&modestbranding=1&start='+s+(e?'&end='+e:'');document.getElementById('ytF').src='https://www.youtube.com/embed/'+_vid+'?'+p;updEmb();}
+function addFQ(){var t=parseInt(document.getElementById('fv_qt').value)||0;var q=document.getElementById('fv_qx').value.trim();if(!q){alert('Enter a question.');return;}_fqs.push({t:t,q:q});_fqs.sort(function(a,b){return a.t-b.t;});rnFQs();document.getElementById('fv_qx').value='';}
+function rnFQs(){var el=document.getElementById('fvQList');if(!el)return;if(!_fqs.length){el.innerHTML='<p style="color:#bbb;font-size:.79rem">No questions yet.</p>';return;}el.innerHTML=_fqs.map(function(q,i){var m=Math.floor(q.t/60),s=q.t%60;return '<div class="fq-item"><span class="fqt">'+m+':'+(s<10?'0':'')+s+'</span><span style="flex:1;font-size:.82rem">'+q.q+'</span><button onclick="dlFQ('+i+')" style="background:none;border:none;cursor:pointer;color:#c00;font-size:.85rem">✕</button></div>';}).join('');}
+function dlFQ(i){_fqs.splice(i,1);rnFQs();}
+function updEmb(){if(!_vid)return;var s=parseInt(document.getElementById('fv_s').value)||0;var t=document.getElementById('fv_t').value||'Flipped Lesson';var el=document.getElementById('fv_emb');if(el)el.textContent='<iframe width="560" height="315" src="https://www.youtube.com/embed/'+_vid+'?start='+s+'&rel=0" frameborder="0" allowfullscreen title="'+t+'"></iframe>';}
+function cpEmb(){navigator.clipboard.writeText(document.getElementById('fv_emb').textContent).then(function(){alert('Embed code copied!');});}
+function qF(sel,id){if(sel.value){var el=document.getElementById(id);if(el){el.value+=(el.value?'
+':'')+sel.value;}sel.value='';}}
+function dlFlip(){if(!_vid){alert('Load a video first!');return;}var title=document.getElementById('fv_t').value||'Flipped Lesson';var bef=document.getElementById('fv_bef').value;var dur=document.getElementById('fv_dur').value;var aft=document.getElementById('fv_aft').value;var voc=document.getElementById('fv_voc').value;var s=parseInt(document.getElementById('fv_s').value)||0;var qr=_fqs.map(function(q){var m=Math.floor(q.t/60),ss=q.t%60;return '<tr><td style="background:#dff;padding:5px;font-weight:700">'+m+':'+(ss<10?'0':'')+ss+'</td><td style="padding:5px">'+q.q+'</td></tr>';}).join('');var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+title+'</title><style>body{font-family:sans-serif;max-width:800px;margin:1.5rem auto;padding:1rem;background:#f9f5f0}h1{color:#c1694f}h2{color:#1a6a9a;margin-top:1.5rem}section{background:#fff;border-radius:8px;padding:1rem;margin-bottom:1rem;box-shadow:0 1px 5px rgba(0,0,0,.08)}.yt{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px}.yt iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}table{width:100%;border-collapse:collapse;font-size:.88rem}th{background:#1a6a9a;color:#fff;padding:5px 9px;text-align:left}.prompt{background:#fff8f0;border-left:3px solid #c1694f;padding:.5rem .8rem;font-size:.87rem;margin:.3rem 0;border-radius:0 6px 6px 0}</style></head><body><h1>🎥 '+title+'</h1>'+(bef?'<section><h2>☀️ Before Watching</h2><div class="prompt">'+bef+'</div></section>':'')+'<section><h2>📺 Watch</h2><div class="yt"><iframe src="https://www.youtube.com/embed/'+_vid+'?start='+s+'&rel=0" allowfullscreen></iframe></div></section>'+(dur?'<section><h2>✏️ While Watching</h2><div class="prompt">'+dur+'</div>'+(voc?'<p><strong>Key vocab:</strong> '+voc+'</p>':'')+'</section>':'')+(qr?'<section><h2>⏸ Pause &amp; Think</h2><table><thead><tr><th>Time</th><th>Question</th></tr></thead><tbody>'+qr+'</tbody></table></section>':'')+(aft?'<section><h2>🤔 After Watching</h2><div class="prompt">'+aft+'</div></section>':'')+'<p style="color:#aaa;font-size:.73rem;margin-top:1rem">E² Teaching Framework — Dina El Ahl</p></body></html>';var b=new Blob([html],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flipped_'+_vid+'.html';a.click();}
+
+// ===== CHECKLIST =====
+function svCL(){var d={};document.querySelectorAll('.ci input').forEach(function(cb){d[cb.id]=cb.checked;});try{localStorage.setItem('e2chk',JSON.stringify(d));}catch(e){}}
+function ldCL(){var s;try{s=localStorage.getItem('e2chk');}catch(e){}if(s){try{var d=JSON.parse(s);Object.keys(d).forEach(function(id){var el=document.getElementById(id);if(el)el.checked=d[id];});}catch(e){}}updCL();}
+function updCL(){['p1','p2','p3','p4'].forEach(function(p){var all=document.querySelectorAll('[data-p="'+p+'"]');var c=document.querySelectorAll('[data-p="'+p+'"]:checked');var pct=all.length?Math.round(c.length/all.length*100):0;var f=document.getElementById('fill-'+p);var t=document.getElementById('pct-'+p);if(f)f.style.width=pct+'%';if(t)t.textContent=pct+'%';});var all=document.querySelectorAll('.ci input');var c=document.querySelectorAll('.ci input:checked');var pct=all.length?Math.round(c.length/all.length*100):0;var f=document.getElementById('fill-all');var t=document.getElementById('pct-all');if(f)f.style.width=pct+'%';if(t)t.textContent=pct+'%';}
+function rstCL(){if(!confirm('Reset checklist?'))return;document.querySelectorAll('.ci input').forEach(function(cb){cb.checked=false;});svCL();updCL();}
+document.querySelectorAll('.ci input').forEach(function(cb){cb.addEventListener('change',function(){svCL();updCL();});});
+
+// ===== EXPORT/IMPORT =====
+var _fmt='scorm12';
+var _fD={scorm12:'<strong>SCORM 1.2</strong> — .zip with imsmanifest.xml. Upload to Moodle, Blackboard, D2L, Sakai.',scorm2004:'<strong>SCORM 2004</strong> — Advanced sequencing. Canvas, Blackboard Ultra.',xapi:'<strong>xAPI / Tin Can</strong> — JSON for LRS platforms.',imscc:'<strong>IMS Common Cartridge</strong> — .imscc for Canvas, Moodle, Schoology.',qti:'<strong>QTI 2.1</strong> — Assessment XML for Canvas, Moodle, TAO.',json:'<strong>JSON Backup</strong> — Universal. Re-import here.'};
+function sFmt(el,fmt){document.querySelectorAll('.lmc').forEach(function(c){c.classList.remove('sel');});el.classList.add('sel');_fmt=fmt;var d=document.getElementById('exp-desc');if(d)d.innerHTML=_fD[fmt];}
+function getAll(){var lp=getLP();var chk={};document.querySelectorAll('.ci input').forEach(function(cb){chk[cb.id]=cb.checked;});return {v:'4.0',at:new Date().toISOString(),lp:lp,bp:{w:_bpW,s:document.getElementById('bp_subj')?document.getElementById('bp_subj').value:'',t:document.getElementById('bp_teacher')?document.getElementById('bp_teacher').value:''},chk:chk};}
+function doExp(){var data=getAll();if(_fmt==='json'){var b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});dlUrl(URL.createObjectURL(b),'e2_backup_'+_ts()+'.json');return;}if(_fmt==='xapi'){xpXAPI(data);return;}if(_fmt==='qti'){xpQTI();return;}if(_fmt==='imscc'){xpIMSCC(data);return;}xpSCORM(data,_fmt==='scorm2004');}
+function cpLPTxt(){var d=getLP();var t='E² LESSON PLAN
+'+'='.repeat(40)+'
+
+';var L={lp_subject:'Subject',lp_grade:'Grade',lp_topic:'Topic',lp_duration:'Duration',lp_date:'Date',lp_objectives:'Objectives',lp_hook:'Hook',lp_teach:'Teach',lp_practice:'Practice',lp_connect:'Connect',lp_reflect:'Reflect',lp_assessment:'Assessment',lp_success:'Success Criteria',lp_materials:'Materials',lp_tech:'Technology'};Object.keys(L).forEach(function(id){if(d[id]&&d[id].trim())t+=L[id]+': '+d[id]+'
+
+';});navigator.clipboard.writeText(t).then(function(){alert('Copied!');});}
+function xpXAPI(data){var lp=data.lp;var s={"@context":"https://w3id.org/xapi/profiles/tincan/v1",id:"urn:uuid:"+_uuid(),actor:{objectType:"Agent",name:data.bp.t||"Teacher",mbox:"mailto:teacher@school.edu"},verb:{id:"http://adlnet.gov/expapi/verbs/planned",display:{"en-US":"planned"}},object:{objectType:"Activity",id:"urn:e2:"+_ts(),definition:{name:{"en-US":lp.lp_topic||"Lesson"},description:{"en-US":"Subject: "+(lp.lp_subject||"")+" Grade: "+(lp.lp_grade||"")},type:"http://adlnet.gov/expapi/activities/lesson"}},result:{extensions:{"http://e2framework.edu/lp":lp}},timestamp:data.at};var b=new Blob([JSON.stringify({statements:[s]},null,2)],{type:'application/json'});dlUrl(URL.createObjectURL(b),'e2_xapi_'+_ts()+'.json');}
+function xpQTI(){var xml='<?xml version="1.0" encoding="UTF-8"?>
+<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" identifier="e2" title="E2 Reflection">
+<assessmentItem identifier="Q1" title="What was the main teaching strategy?" adaptive="false" timeDependent="false"><responseDeclaration identifier="R" cardinality="single" baseType="string"/><itemBody><textEntryInteraction responseIdentifier="R" expectedLength="100"/></itemBody></assessmentItem>
+</assessmentTest>';var b=new Blob([xml],{type:'application/xml'});dlUrl(URL.createObjectURL(b),'e2_qti_'+_ts()+'.xml');}
+function bldLH(data){var lp=data.lp;var rows=Object.entries({Subject:lp.lp_subject,Grade:lp.lp_grade,Topic:lp.lp_topic,Duration:lp.lp_duration,Date:lp.lp_date,Objectives:lp.lp_objectives,Hook:lp.lp_hook,Teach:lp.lp_teach,Practice:lp.lp_practice,Connect:lp.lp_connect,Reflect:lp.lp_reflect,Assessment:lp.lp_assessment}).filter(function(e){return e[1];}).map(function(e){return '<tr><th style="background:#c1694f;color:#fff;padding:5px 9px;text-align:left">'+e[0]+'</th><td style="padding:5px 9px;border-bottom:1px solid #f0d8c0">'+e[1]+'</td></tr>';}).join('');return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>E² Lesson</title></head><body style="font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem"><h1 style="color:#c1694f">E² Teaching Framework — Dina El Ahl</h1><table style="width:100%;border-collapse:collapse;margin-top:1rem">'+rows+'</table></body></html>';}
+function xpSCORM(data,v4){var lp=data.lp;var ns=v4?'http://www.adlnet.org/xsd/adlseq_v1p3':'http://www.adlnet.org/xsd/adlcp_rootv1p2';var mf='<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="e2" version="1.0" xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:adlcp="'+ns+'">
+<metadata><schema>ADL SCORM</schema><schemaversion>'+(v4?'CAM 1.3':'1.2')+'</schemaversion></metadata>
+<organizations default="o1"><organization identifier="o1"><title>E² — '+(lp.lp_topic||'Lesson')+'</title><item identifier="i1" identifierref="r1"><title>'+(lp.lp_topic||'Lesson')+'</title></item></organization></organizations>
+<resources><resource identifier="r1" type="webcontent" adlcp:scormtype="sco" href="index.html"><file href="index.html"/></resource></resources>
+</manifest>';var z=bldZ({'imsmanifest.xml':mf,'index.html':bldLH(data)});var b=new Blob([z],{type:'application/zip'});dlUrl(URL.createObjectURL(b),'e2_scorm_'+(v4?'2004':'12')+'_'+_ts()+'.zip');}
+function xpIMSCC(data){var lp=data.lp;var mf='<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imsccv1p3/imscp_v1p1" identifier="e2_cc"><metadata><schema>IMS Common Cartridge</schema><schemaversion>1.3.0</schemaversion></metadata><organizations><organization identifier="o1" structure="rooted-hierarchy"><item identifier="root"><item identifier="i1" identifierref="r1"><title>'+(lp.lp_topic||'E2 Lesson')+'</title></item></item></organization></organizations><resources><resource identifier="r1" type="webcontent" href="lesson.html"><file href="lesson.html"/></resource></resources></manifest>';var z=bldZ({'imsmanifest.xml':mf,'lesson.html':bldLH(data)});var b=new Blob([z],{type:'application/zip'});dlUrl(URL.createObjectURL(b),'e2_imscc_'+_ts()+'.imscc');}
+function hDrop(e){e.preventDefault();var f=e.dataTransfer.files[0];if(f)rdImp(f);}
+function hIF(e){var f=e.target.files[0];if(f)rdImp(f);}
+function rdImp(file){var r=new FileReader();r.onload=function(ev){document.getElementById('iPaste').value=ev.target.result;doImp();};r.readAsText(file);}
+function doImp(){var raw=document.getElementById('iPaste').value.trim();if(!raw){alert('Paste JSON or select a file.');return;}try{var d=JSON.parse(raw);var msg=[];if(d.lp||d.lessonPlan){var lp=d.lp||d.lessonPlan;LP_IDS.forEach(function(id){var el=document.getElementById(id);if(el&&lp[id]!==undefined)el.value=lp[id];});updSWBAT();saveLP();msg.push('Lesson Plan');}if(d.bp||d.blueprint){var bp=d.bp||d.blueprint;_bpW=(bp.w||bp.weeks)||_bpW;if((bp.s||bp.subject)&&document.getElementById('bp_subj'))document.getElementById('bp_subj').value=bp.s||bp.subject;if((bp.t||bp.teacher)&&document.getElementById('bp_teacher'))document.getElementById('bp_teacher').value=bp.t||bp.teacher;bpRn();bpSv();msg.push('Blueprint');}if(d.chk||d.checklist){var chk=d.chk||d.checklist;Object.keys(chk).forEach(function(id){var el=document.getElementById(id);if(el)el.checked=chk[id];});svCL();updCL();msg.push('Checklist');}var m=document.getElementById('iMsg');if(m){m.textContent='✅ Restored: '+msg.join(', ');m.style.display='block';setTimeout(function(){m.style.display='none';},4000);}}catch(err){alert('Import failed: '+err.message);}}
+
+// ===== SHARE =====
+function cpURL(){var u='https://raw.githack.com/DinaElAhl/desktop-tutorial/claude/e2-teaching-framework-kZdBp/e2-app-standalone.html';navigator.clipboard.writeText(u).then(function(){alert('✅ Link copied! Share with your school.');}).catch(function(){prompt('Copy:',u);});}
+
+// ===== ZIP =====
+function bldZ(files){var entries=[],cd=[],off=0;Object.entries(files).forEach(function(f){var nm=s2b(f[0]);var data=s2b(f[1]);var crc=crc32(data);var lh=lhdr(nm,data.length,crc);entries.push(cat(lh,nm,data));cd.push(cde(nm,data.length,crc,off));off+=lh.length+nm.length+data.length;});var cdData=cat.apply(null,cd);return cat.apply(null,entries.concat([cdData,eocd(cd.length,cdData.length,off)]));}
+function s2b(s){var a=[];for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);if(c<128)a.push(c);else if(c<2048)a.push(192|(c>>6),128|(c&63));else a.push(224|(c>>12),128|((c>>6)&63),128|(c&63));}return new Uint8Array(a);}
+function u16(n){return new Uint8Array([n&255,(n>>8)&255]);}
+function u32(n){return new Uint8Array([n&255,(n>>8)&255,(n>>16)&255,(n>>24)&255]);}
+function cat(){var a=Array.from(arguments),len=a.reduce(function(s,x){return s+x.length;},0),out=new Uint8Array(len),p=0;a.forEach(function(x){out.set(x,p);p+=x.length;});return out;}
+function lhdr(nm,sz,crc){return cat(new Uint8Array([0x50,0x4b,3,4]),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0));}
+function cde(nm,sz,crc,off){return cat(new Uint8Array([0x50,0x4b,1,2]),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(off),nm);}
+function eocd(n,csz,coff){return cat(new Uint8Array([0x50,0x4b,5,6,0,0,0,0]),u16(n),u16(n),u32(csz),u32(coff),u16(0));}
+function crc32(d){if(!window._cT){var t=new Uint32Array(256);for(var i=0;i<256;i++){var c=i;for(var j=0;j<8;j++)c=c&1?(0xEDB88320^(c>>>1)):c>>>1;t[i]=c;}window._cT=t;}var crc=0xFFFFFFFF;for(var i=0;i<d.length;i++)crc=window._cT[(crc^d[i])&0xff]^(crc>>>8);return(crc^0xFFFFFFFF)>>>0;}
+function dlUrl(url,name){var a=document.createElement('a');a.href=url;a.download=name;a.click();}
+function _ts(){return new Date().toISOString().replace(/[:.]/g,'-').substring(0,16);}
+function _uuid(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16);});}
+
+// ===== INIT =====
+loadLP();bpLd();ldCL();updSWBAT();
+</script>
+</body>
+</html>

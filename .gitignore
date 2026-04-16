@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Capacitor native projects (generated — rebuild with `npx cap add`)
+ios/
+android/
+
+# Tauri build artifacts
+src-tauri/target/
+src-tauri/Cargo.lock
+src-tauri/gen/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Secrets / env
+.env
+.env.local
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+AuthKey_*.p8
+
+# Build output
+dist/
+build/

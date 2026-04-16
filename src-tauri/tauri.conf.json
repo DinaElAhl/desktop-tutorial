@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "E² Teaching",
+  "version": "1.0.0",
+  "identifier": "com.dinaelahl.e2teaching",
+  "build": {
+    "frontendDist": "../",
+    "devUrl": "http://localhost:8080",
+    "beforeDevCommand": "npm run serve",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "E² Teaching Framework",
+        "width": 1200,
+        "height": 820,
+        "minWidth": 720,
+        "minHeight": 560,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "decorations": true,
+        "transparent": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.gumroad.com https://api.lemonsqueezy.com; script-src 'self' 'unsafe-inline'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app", "dmg", "msi", "nsis", "deb", "appimage"],
+    "icon": [
+      "../icons/icon-128.png",
+      "../icons/icon-256.png",
+      "../icons/icon-512.png",
+      "../icons/icon-1024.png"
+    ],
+    "publisher": "Dina El Ahl",
+    "category": "Education",
+    "shortDescription": "E² Teaching Framework",
+    "longDescription": "Every student has the right to understand — lesson planning, blueprints, rubrics, and reference tools in one place.",
+    "copyright": "© 2026 Dina El Ahl",
+    "license": "See EULA.md",
+    "macOS": {
+      "minimumSystemVersion": "11.0"
+    },
+    "windows": {
+      "wix": {
+        "language": "en-US"
+      }
+    }
+  }
+}

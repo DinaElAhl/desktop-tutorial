@@ -1,0 +1,27 @@
+{
+  "name": "e2-teaching-framework",
+  "version": "1.0.0",
+  "description": "Every student has the right to understand — lesson planning, blueprints, rubrics, and reference tools.",
+  "author": "Dina El Ahl",
+  "license": "SEE LICENSE IN EULA.md",
+  "private": true,
+  "scripts": {
+    "icons": "python3 scripts/generate-icons.py",
+    "serve": "npx http-server . -p 8080 -c-1",
+    "cap:init": "npx cap init 'E² Teaching' com.dinaelahl.e2teaching --web-dir=.",
+    "cap:add:ios": "npx cap add ios",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android",
+    "tauri:dev": "cargo tauri dev",
+    "tauri:build": "cargo tauri build"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/android": "^6.1.2",
+    "http-server": "^14.1.1"
+  }
+}
