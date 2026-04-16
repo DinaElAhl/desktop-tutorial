@@ -1,20 +1,20 @@
 /*
- * E² Teaching Framework — Service Worker
+ * E² Teaching Framework — Service Worker v1.1.0
  * Provides offline support and fast repeat loads.
  *
  * Strategy:
- *   - Pre-cache the app shell on install
- *   - Network-first for navigations (so users get updates when online)
- *   - Cache-first for static assets (icons, fonts, manifest)
- *   - Fall back to cached shell when offline
+ *   — Pre-cache the app shell on install
+ *   — Network-first for navigations (so users get updates when online)
+ *   — Cache-first for static assets (icons, fonts, manifest)
+ *   — Fall back to cached shell when offline
  *
- * Bump CACHE_VERSION whenever you ship a breaking change and you want
+ * Bump CACHE_VERSION whenever you ship a breaking change
  * to invalidate stale caches on user devices.
  */
 
-const CACHE_VERSION = 'e2-v1.0.0';
-const APP_SHELL_CACHE = `e2-shell-${CACHE_VERSION}`;
-const RUNTIME_CACHE   = `e2-runtime-${CACHE_VERSION}`;
+const CACHE_VERSION = 'e2-v1.1.0';
+const SHELL_CACHE   = `e2-shell-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `e2-runtime-${CACHE_VERSION}`;
 
 const APP_SHELL = [
   './',
@@ -24,16 +24,10 @@ const APP_SHELL = [
   './e2-lesson-planner.html',
   './e2-blueprint-planner.html',
   './e2-rubrics-assessment.html',
+  './e2-app-standalone.html',
   './manifest.webmanifest',
   './license.js',
   './pwa.js',
-  './icons/icon-48.png',
-  './icons/icon-72.png',
-  './icons/icon-96.png',
-  './icons/icon-128.png',
-  './icons/icon-144.png',
-  './icons/icon-152.png',
-  './icons/icon-180.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/maskable-512.png',
@@ -41,114 +35,101 @@ const APP_SHELL = [
   './icons/favicon.ico',
 ];
 
-// ─── Install: pre-cache the app shell ─────────────────────────────────────
+// ── Install: pre-cache the app shell ─────────────────────────────
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); // activate new SW immediately
   event.waitUntil(
-    caches.open(APP_SHELL_CACHE).then((cache) => {
+    caches.open(SHELL_CACHE).then((cache) => {
       // addAll is atomic — if any fail, nothing is cached.
-      // Use individual adds with catch so a single missing asset doesn't break install.
+      // Use individual adds with catch so a single missing asset
+      // doesn't break install.
       return Promise.all(
         APP_SHELL.map((url) =>
           cache.add(url).catch((err) => {
-            console.warn('[SW] Skipping pre-cache for', url, err.message);
+            console.warn('[SW] Failed to pre-cache:', url, err);
           })
         )
       );
     })
   );
-  self.skipWaiting();
 });
 
-// ─── Activate: purge old caches ───────────────────────────────────────────
+// ── Activate: clean up old caches ────────────────────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k !== APP_SHELL_CACHE && k !== RUNTIME_CACHE)
-          .map((k) => caches.delete(k))
+    caches.keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((k) => k !== SHELL_CACHE && k !== RUNTIME_CACHE)
+            .map((k) => {
+              console.log('[SW] Deleting old cache:', k);
+              return caches.delete(k);
+            })
+        )
       )
-    )
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// ─── Fetch: strategy per request type ─────────────────────────────────────
+// ── Fetch: serve from cache, fall back to network ────────────────
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-
-  // Only handle GET
-  if (request.method !== 'GET') return;
-
   const url = new URL(request.url);
 
-  // Skip cross-origin requests we don't control (fonts.googleapis etc. handled below)
-  const isSameOrigin = url.origin === self.location.origin;
-  const isGoogleFonts =
-    url.hostname === 'fonts.googleapis.com' ||
-    url.hostname === 'fonts.gstatic.com';
+  // Only handle same-origin requests
+  if (url.origin !== location.origin) return;
 
-  // Navigations → network-first, fall back to cached shell
+  // Navigation requests: network-first, fall back to cached shell
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(SHELL_CACHE).then((c) => c.put(request, clone));
+          }
           return response;
         })
-        .catch(() =>
-          caches.match(request).then(
-            (cached) => cached || caches.match('./index.html')
-          )
-        )
+        .catch(() => caches.match('./index.html'))
     );
     return;
   }
 
-  // Same-origin static assets → cache-first
-  if (isSameOrigin) {
+  // Static assets: cache-first
+  if (
+    url.pathname.startsWith('/icons/') ||
+    url.pathname.startsWith('/fonts/') ||
+    url.pathname.endsWith('.webmanifest') ||
+    url.pathname.endsWith('.css') ||
+    url.pathname.endsWith('.js')
+  ) {
     event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-        return fetch(request)
-          .then((response) => {
-            if (!response || response.status !== 200 || response.type === 'opaque') {
-              return response;
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            if (response.ok) {
+              const clone = response.clone();
+              caches.open(RUNTIME_CACHE).then((c) => c.put(request, clone));
             }
-            const copy = response.clone();
-            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
             return response;
           })
-          .catch(() => cached);
-      })
-    );
-    return;
-  }
-
-  // Google Fonts → stale-while-revalidate
-  if (isGoogleFonts) {
-    event.respondWith(
-      caches.open(RUNTIME_CACHE).then((cache) =>
-        cache.match(request).then((cached) => {
-          const network = fetch(request)
-            .then((response) => {
-              cache.put(request, response.clone());
-              return response;
-            })
-            .catch(() => cached);
-          return cached || network;
-        })
       )
     );
     return;
   }
 
-  // Everything else: try network, fall back to cache
-  event.respondWith(fetch(request).catch(() => caches.match(request)));
-});
-
-// Allow the page to trigger immediate activation after update.
-self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+  // Everything else: network-first with runtime cache fallback
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(RUNTIME_CACHE).then((c) => c.put(request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
+  );
 });
