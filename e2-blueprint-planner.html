@@ -13,13 +13,16 @@
 <meta name="apple-mobile-web-app-title" content="E² Teaching">
 <meta name="mobile-web-app-capable" content="yes">
 <title>E² Blueprint & LMS Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap"></noscript>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 :root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.5}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--sand);color:var(--brown);line-height:1.5}
 .hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:32px 20px 24px}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
 .hero p{font-size:.9rem;opacity:.9}
 .toolbar{background:var(--cream);border-bottom:1px solid var(--peach);padding:16px 20px}
 .tool-inner{max-width:1400px;margin:0 auto}
@@ -29,7 +32,7 @@ body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);li
 .tool-field input,.tool-field select{padding:7px 12px;border:1px solid var(--peach);border-radius:6px;font-size:.85rem;background:#fff}
 .tool-field input:focus,.tool-field select:focus{outline:none;border-color:var(--terra)}
 .btn-row{display:flex;flex-wrap:wrap;gap:8px}
-.btn{padding:8px 18px;border:none;border-radius:7px;cursor:pointer;font-size:.82rem;font-weight:500;transition:all .2s}
+.btn{padding:8px 18px;border:none;border-radius:7px;cursor:pointer;font-size:.82rem;font-weight:500;transition:color .2s,background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
 .btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--clay)}
 .btn-secondary{background:var(--rose);color:#fff}.btn-secondary:hover{background:var(--terra)}
 .btn-danger{background:#d9534f;color:#fff}.btn-danger:hover{background:#c9302c}
@@ -46,7 +49,7 @@ tbody tr:nth-child(odd) td{background:var(--cream)}
 tbody tr:nth-child(even) td:first-child{background:#fff}
 tbody tr:nth-child(odd) td:first-child{background:var(--cream)}
 tbody tr:hover td{background:var(--peach) !important}
-td textarea{width:100%;min-height:60px;border:1px solid transparent;border-radius:4px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:.8rem;resize:vertical;background:transparent;color:var(--brown);transition:border-color .2s}
+td textarea{width:100%;min-height:60px;border:1px solid transparent;border-radius:4px;padding:6px 8px;font-family:'Inter',system-ui,sans-serif;font-size:.8rem;resize:vertical;background:transparent;color:var(--brown);transition:border-color .2s}
 td textarea:focus{border-color:var(--gold);background:#fff;outline:none;box-shadow:0 0 0 2px rgba(212,168,67,.15)}
 td textarea::placeholder{color:var(--rose);font-size:.78rem}
 
@@ -59,7 +62,7 @@ td textarea::placeholder{color:var(--rose);font-size:.78rem}
 .week-card h3{color:var(--terra);font-size:1rem;margin-bottom:12px}
 .week-card .card-field{margin-bottom:10px}
 .week-card .card-field label{font-size:.78rem;font-weight:600;color:var(--clay);display:block;margin-bottom:3px}
-.week-card .card-field textarea{width:100%;min-height:40px;padding:6px 10px;border:1px solid var(--peach);border-radius:6px;font-size:.82rem;font-family:'Inter',sans-serif}
+.week-card .card-field textarea{width:100%;min-height:40px;padding:6px 10px;border:1px solid var(--peach);border-radius:6px;font-size:.82rem;font-family:'Inter',system-ui,sans-serif}
 
 .view-toggle{display:none}
 @media(max-width:768px){.view-toggle{display:inline-flex}}
