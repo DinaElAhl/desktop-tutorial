@@ -13,13 +13,16 @@
 <meta name="apple-mobile-web-app-title" content="E² Teaching">
 <meta name="mobile-web-app-capable" content="yes">
 <title>E² Lesson Plan Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap"></noscript>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 :root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9;--lrose:#F0D5D3}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
 .hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:40px 20px 30px}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:6px}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:6px}
 .hero p{font-size:.95rem;opacity:.9}
 .progress-bar-container{background:var(--cream);border-bottom:1px solid var(--peach);padding:14px 20px;position:sticky;top:0;z-index:100}
 .prog-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px}
@@ -34,12 +37,12 @@ body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);li
 .toolbar button.secondary{background:var(--rose)}
 .toolbar button.secondary:hover{background:var(--terra)}
 .section{background:var(--cream);border-radius:14px;padding:24px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid rgba(201,145,143,.15)}
-.section h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--clay);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--peach);display:flex;align-items:center;gap:10px}
-.section h2 .num{background:var(--terra);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600}
+.section h2{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:var(--clay);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--peach);display:flex;align-items:center;gap:10px}
+.section h2 .num{background:var(--terra);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;font-size:.8rem;font-weight:600}
 .field{margin-bottom:16px}
 .field label{display:block;font-weight:600;font-size:.85rem;color:var(--brown);margin-bottom:5px}
 .field .hint{font-size:.78rem;color:var(--rose);margin-bottom:5px;font-style:italic}
-input[type="text"],input[type="date"],select,textarea{width:100%;padding:10px 14px;border:1px solid var(--peach);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;background:#fff;color:var(--brown);transition:border-color .2s}
+input[type="text"],input[type="date"],select,textarea{width:100%;padding:10px 14px;border:1px solid var(--peach);border-radius:8px;font-family:'Inter',system-ui,sans-serif;font-size:.9rem;background:#fff;color:var(--brown);transition:border-color .2s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,105,79,.12)}
 textarea{min-height:80px;resize:vertical}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
