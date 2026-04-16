@@ -13,28 +13,31 @@
 <meta name="apple-mobile-web-app-title" content="E² Teaching">
 <meta name="mobile-web-app-capable" content="yes">
 <title>E² Rubrics & Assessment Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400&display=swap"></noscript>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 :root{--terra:#C1694F;--clay:#B7553B;--rose:#C9918F;--sand:#FAF0E6;--gold:#D4A843;--brown:#3D2B1F;--cream:#FFF8F0;--peach:#FFDAB9}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--sand);color:var(--brown);line-height:1.6}
 .hero{background:linear-gradient(135deg,var(--terra),var(--clay) 50%,var(--rose));color:var(--cream);text-align:center;padding:36px 20px 28px}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:4px}
 .hero p{font-size:.9rem;opacity:.9;max-width:600px;margin:0 auto}
 nav{background:var(--cream);border-bottom:2px solid var(--peach);display:flex;justify-content:center;gap:4px;padding:8px 12px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
-nav button{padding:9px 20px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;background:transparent;color:var(--brown);transition:all .2s}
+nav button{padding:9px 20px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;background:transparent;color:var(--brown);transition:color .2s,background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
 nav button:hover{background:var(--peach)}
 nav button.active{background:var(--terra);color:#fff}
 .tab{display:none;max-width:880px;margin:0 auto;padding:24px 16px 60px}
 .tab.active{display:block}
 .card{background:var(--cream);border-radius:12px;padding:22px 24px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid rgba(201,145,143,.15)}
-.card h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--clay);margin-bottom:14px}
+.card h2{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:var(--clay);margin-bottom:14px}
 .card h3{font-size:.95rem;color:var(--terra);margin:14px 0 8px}
 
 /* Rubric Table */
 .rubric-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:14px 0}
 .rubric-table th{background:var(--terra);color:#fff;padding:10px 8px;text-align:left;font-weight:600;font-size:.78rem}
-.rubric-table td{padding:10px 8px;border-bottom:1px solid var(--peach);cursor:pointer;transition:all .2s;vertical-align:top}
+.rubric-table td{padding:10px 8px;border-bottom:1px solid var(--peach);cursor:pointer;transition:color .2s,background-color .2s,border-color .2s,box-shadow .2s,transform .2s;vertical-align:top}
 .rubric-table td:first-child{font-weight:600;color:var(--clay);background:var(--cream);cursor:default;min-width:120px}
 .rubric-table td:not(:first-child):hover{background:var(--peach)}
 .rubric-table td.selected{background:var(--gold);color:var(--brown);font-weight:500;border-radius:4px}
@@ -43,7 +46,7 @@ nav button.active{background:var(--terra);color:#fff}
 .rubric-table tr:nth-child(even) td.selected{background:var(--gold)}
 
 .score-box{background:linear-gradient(135deg,var(--cream),var(--peach));border-radius:10px;padding:20px;text-align:center;margin:16px 0}
-.score-box .score{font-family:'Playfair Display',serif;font-size:2.4rem;color:var(--terra)}
+.score-box .score{font-family:'Playfair Display',Georgia,serif;font-size:2.4rem;color:var(--terra)}
 .score-box .label{font-size:.9rem;color:var(--brown);margin-top:4px}
 .score-box .level{font-size:1.1rem;font-weight:600;color:var(--clay);margin-top:6px}
 
@@ -69,7 +72,7 @@ nav button.active{background:var(--terra);color:#fff}
 .gen-output .template{background:#fff;border-radius:8px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold)}
 .gen-output .template h5{font-size:.85rem;color:var(--clay);margin-bottom:6px}
 .gen-output .template p,.gen-output .template textarea{font-size:.85rem}
-.gen-output textarea{width:100%;min-height:50px;border:1px solid var(--peach);border-radius:6px;padding:8px;font-family:'Inter',sans-serif}
+.gen-output textarea{width:100%;min-height:50px;border:1px solid var(--peach);border-radius:6px;padding:8px;font-family:'Inter',system-ui,sans-serif}
 
 /* Observation form */
 .obs-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -84,7 +87,7 @@ nav button.active{background:var(--terra);color:#fff}
 .obs-check .obs-detail strong{font-size:.85rem;color:var(--clay);display:block;margin-bottom:4px}
 .obs-check .obs-detail textarea{width:100%;min-height:36px;padding:6px;border:1px solid var(--peach);border-radius:5px;font-size:.82rem}
 
-.btn{padding:9px 22px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;transition:all .2s;margin:4px}
+.btn{padding:9px 22px;border:none;border-radius:8px;cursor:pointer;font-size:.84rem;font-weight:500;transition:color .2s,background-color .2s,border-color .2s,box-shadow .2s,transform .2s;margin:4px}
 .btn-primary{background:var(--terra);color:#fff}.btn-primary:hover{background:var(--clay)}
 .btn-secondary{background:var(--rose);color:#fff}.btn-secondary:hover{background:var(--terra)}
 
