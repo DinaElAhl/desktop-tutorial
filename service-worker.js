@@ -1,5 +1,5 @@
 /*
- * E² Teaching Framework — Service Worker v1.1.0
+ * E² Teaching Framework — Service Worker v1.2.0
  * Provides offline support and fast repeat loads.
  *
  * Strategy:
@@ -12,7 +12,7 @@
  * to invalidate stale caches on user devices.
  */
 
-const CACHE_VERSION = 'e2-v1.1.0';
+const CACHE_VERSION = 'e2-v1.2.0';
 const SHELL_CACHE   = `e2-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `e2-runtime-${CACHE_VERSION}`;
 
@@ -25,6 +25,9 @@ const APP_SHELL = [
   './e2-blueprint-planner.html',
   './e2-rubrics-assessment.html',
   './e2-app-standalone.html',
+  './pathways-launcher.html',
+  './subject-data.js',
+  './premium-tier-logic.js',
   './manifest.webmanifest',
   './license.js',
   './pwa.js',
